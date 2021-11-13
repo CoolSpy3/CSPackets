@@ -1,0 +1,3 @@
+[submodule "csmodloader"]
+	path = csmodloader
+	url = https://github.com/CoolSpy3/CSModLoader.git
