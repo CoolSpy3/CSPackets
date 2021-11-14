@@ -15,6 +15,9 @@ public class Main implements Entrypoint
         PacketParser.addSpecification(new ClientChatSendPacket.Spec());
         PacketParser.registerPacketClass(PacketDirection.SERVERBOUND, ClientChatSendPacket.class,
                 0x01);
+        PacketParser.addSpecification(new ServerChatSendPacket.Spec());
+        PacketParser.registerPacketClass(PacketDirection.CLIENTBOUND, ServerChatSendPacket.class,
+                0x02);
     }
 
 }
