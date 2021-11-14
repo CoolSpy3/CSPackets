@@ -10,6 +10,11 @@ public class ServerChatSendPacket extends Packet
     public final String msg;
     public final byte position;
 
+    public ServerChatSendPacket(String msg)
+    {
+        this(msg, (byte) 0x00);
+    }
+
     public ServerChatSendPacket(String msg, byte position)
     {
         this.msg = msg;
