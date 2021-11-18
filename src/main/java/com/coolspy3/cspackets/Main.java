@@ -6,7 +6,8 @@ import com.coolspy3.csmodloader.network.PacketDirection;
 import com.coolspy3.csmodloader.network.packet.PacketParser;
 
 @Mod(id = "cspackets", name = "CSPackets",
-        description = "Adds implementations for default packet types", version = "1.0.0")
+        description = "Adds implementations for default packet types", version = "1.0.0",
+        dependencies = "csmodloader:[1.0.0,2)")
 public class Main implements Entrypoint
 {
 
