@@ -1,0 +1,7 @@
+{
+    "varint": {
+        "import": "none",
+        "type": "int",
+        "class": "Packet.VarInt"
+    }
+}

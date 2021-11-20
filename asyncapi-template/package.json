@@ -1,0 +1,19 @@
+{
+    "name": "packet-schema-template",
+    "version": "0.1.0",
+    "dependencies": {
+        "@asyncapi/generator-filters": "^1.0.0",
+        "@asyncapi/generator-hooks": "^0.1.0"
+    },
+    "generator": {
+        "renderer": "nunjucks",
+        "conditionalFiles": {},
+        "nonRenderableFiles": [
+            "SimDeviceSim.java"
+        ],
+        "generator": ">=0.50.0 <2.0.0",
+        "filters": [
+            "@asyncapi/generator-filters"
+        ]
+    }
+}
