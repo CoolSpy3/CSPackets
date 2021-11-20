@@ -25,7 +25,7 @@ public class {{ schemaName }} extends Packet
     {
         {% for prop in props -%}
         this.{{prop['name']}} = {{prop['name']}};
-        {% endfor -%}
+        {%- endfor %}
     }
 
     public {{schemaName}}(Object[] args)
