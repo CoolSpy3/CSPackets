@@ -9,14 +9,14 @@ function getImports(props) {
     var types = getTypes()
     for (const [name, prop] of Object.entries(props)) {
         switch (name) {
-            case "id":
-            case "direction":
+            case 'id':
+            case 'direction':
                 continue;
             default:
                 break;
         }
         var imprt = types[prop.const()]['import']
-        if (imprt !== "none")
+        if (imprt !== 'none')
             imports.push(imprt)
     }
     return imports
@@ -27,8 +27,8 @@ function classTypes(props) {
     var types = getTypes()
     for (const [name, prop] of Object.entries(props)) {
         switch (name) {
-            case "id":
-            case "direction":
+            case 'id':
+            case 'direction':
                 continue;
             default:
                 break;
@@ -45,8 +45,8 @@ function getProps(props) {
     var types = getTypes()
     for (const [name, prop] of Object.entries(props)) {
         switch (name) {
-            case "id":
-            case "direction":
+            case 'id':
+            case 'direction':
                 continue;
             default:
                 break;
@@ -59,4 +59,21 @@ function getProps(props) {
     return out
 }
 
-module.exports = { getImports, classTypes, getProps }
+function sidedPackets(asyncapi, direction) {
+    var out = []
+    for (const [name, schema] of asyncapi.allSchemas()) {
+        if ('direction' in schema.properties() && schema.property('direction').const() === direction)
+            out.push({ name: name, id: schema.property('id').const() })
+    }
+    return out
+}
+
+function clientboundPackets(asyncapi) {
+    return sidedPackets(asyncapi, 'clientbound')
+}
+
+function serverboundPackets(asyncapi) {
+    return sidedPackets(asyncapi, 'serverbound')
+}
+
+module.exports = { getImports, classTypes, getProps, clientboundPackets, serverboundPackets }

@@ -1,7 +1,72 @@
 {
+    "boolean": {
+        "import": "none",
+        "type": "boolean",
+        "class": "Boolean"
+    },
+    "byte": {
+        "import": "none",
+        "type": "byte",
+        "class": "Byte"
+    },
+    "short": {
+        "import": "none",
+        "type": "short",
+        "class": "Short"
+    },
+    "int": {
+        "import": "none",
+        "type": "int",
+        "class": "Integer"
+    },
+    "long": {
+        "import": "none",
+        "type": "long",
+        "class": "Long"
+    },
+    "float": {
+        "import": "none",
+        "type": "float",
+        "class": "Float"
+    },
+    "double": {
+        "import": "none",
+        "type": "double",
+        "class": "Double"
+    },
+    "string": {
+        "import": "none",
+        "type": "String",
+        "class": "String"
+    },
     "varint": {
         "import": "none",
         "type": "int",
         "class": "Packet.VarInt"
+    },
+    "varlong": {
+        "import": "none",
+        "type": "long",
+        "class": "Packet.VarLong"
+    },
+    "uuid": {
+        "import": "java.util.UUID",
+        "type": "UUID",
+        "class": "UUID"
+    },
+    "difficulty": {
+        "import": "com.coolspy3.cspackets.datatypes.Difficulty",
+        "type": "Difficulty",
+        "class": "Difficulty"
+    },
+    "dimension": {
+        "import": "com.coolspy3.cspackets.datatypes.Dimension",
+        "type": "Dimension",
+        "class": "Dimension"
+    },
+    "gamemode": {
+        "import": "com.coolspy3.cspackets.datatypes.Gamemode",
+        "type": "Gamemode",
+        "class": "Gamemode"
     }
 }

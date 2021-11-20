@@ -1,23 +1,54 @@
 asyncapi: 2.0.0
 info:
-  title: Minecraft Packet Specification
-  version: "1.8.9"
-  description: |
-    The specification of packets which are used in a standard Minecraft packet stream
+    title: Minecraft Packet Specification
+    version: "1.8.9"
+    description: |
+        The specification of packets which are used in a standard Minecraft packet stream
 
 channels: {}
 
 components:
-  schemas:
-    ClientboundKeepAlivePacket:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int32
-          const: 0x00
-        direction:
-          type: string
-          const: clientbound
-        keepAliveId:
-          const: varint
+    schemas:
+        ClientboundKeepAlivePacket:
+            type: object
+            properties:
+                id:
+                    const: "0x00"
+                direction:
+                    const: clientbound
+                keepAliveId:
+                    const: varint
+
+        GameJoinPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x01"
+                direction:
+                    const: clientbound
+                entityId:
+                    const: int
+                gamemode:
+                    const: gamemode
+                dimension:
+                    const: dimension
+                difficulty:
+                    const: difficulty
+                maxPlayers:
+                    const: byte
+                levelType:
+                    const: string
+                reducedDebugInfo:
+                    const: boolean
+
+        ServerChatSendPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x02"
+                direction:
+                    const: clientbound
+                msg:
+                    const: string
+                position:
+                    const: byte

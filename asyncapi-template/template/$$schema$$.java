@@ -10,8 +10,8 @@ import com.coolspy3.csmodloader.network.packet.Packet;
 import com.coolspy3.csmodloader.network.packet.PacketSpec;
 
 {% for fqn in schema.properties() | getImports -%}
-import {{ fqn }}
-{% endfor -%}
+import {{ fqn }};
+{%- endfor %}
 
 @PacketSpec(types = { {{ schema.properties() | classTypes }} }, direction = PacketDirection.{{ schema.property('direction').const() | upper }})
 public class {{ schemaName }} extends Packet
@@ -21,11 +21,7 @@ public class {{ schemaName }} extends Packet
     public final {{prop['type']}} {{prop['name']}};
     {% endfor -%}
 
-    public {{ schemaName }}(
-        {% for prop in props -%}
-        {{prop['type']}} {{prop['name']}}{{prop['comma']}}
-        {% endfor -%}
-        )
+    public {{ schemaName }}({% for prop in props -%}{{prop['type']}} {{prop['name']}}{{prop['comma']}}{% endfor -%})
     {
         {% for prop in props -%}
         this.{{prop['name']}} = {{prop['name']}};
@@ -34,21 +30,13 @@ public class {{ schemaName }} extends Packet
 
     public {{schemaName}}(Object[] args)
     {
-        this(
-            {% for i in range(0, props.length) -%}
-            ({{props[i]['type']}}) args[{{i}}]{{props[i]['comma']}}
-            {% endfor -%}
-        );
+        this({% for i in range(0, props.length) -%}({{props[i]['type']}}) args[{{i}}]{{props[i]['comma']}}{% endfor -%});
     }
 
     @Override
     public Object[] getValues()
     {
-        return new Object[] {
-            {% for prop in props -%}
-            {{prop['name']}}{{prop['comma']}}
-            {% endfor -%}
-        };
+        return new Object[] { {%- for prop in props -%}{{prop['name']}}{{prop['comma']}}{%- endfor -%} };
     }
 
 }
