@@ -19,7 +19,7 @@ public class {{ schemaName }} extends Packet
 
     {% for prop in props -%}
     public final {{prop['type']}} {{prop['name']}};
-    {% endfor -%}
+    {%- endfor %}
 
     public {{ schemaName }}({% for prop in props -%}{{prop['type']}} {{prop['name']}}{{prop['comma']}}{% endfor -%})
     {
