@@ -54,6 +54,21 @@
         "type": "UUID",
         "class": "UUID"
     },
+    "positionAndLookFlags": {
+        "import": "com.coolspy3.cspackets.datatypes.PlayerPositionAndLookFlags",
+        "type": "PlayerPositionAndLookFlags",
+        "class": "PlayerPositionAndLookFlags"
+    },
+    "position": {
+        "import": "com.coolspy3.cspackets.datatypes.Position",
+        "type": "Position",
+        "class": "Position"
+    },
+    "slot": {
+        "import": "com.coolspy3.cspackets.datatypes.Slot",
+        "type": "Slot",
+        "class": "Slot"
+    },
     "difficulty": {
         "import": "com.coolspy3.cspackets.datatypes.Difficulty",
         "type": "Difficulty",
@@ -68,5 +83,55 @@
         "import": "com.coolspy3.cspackets.datatypes.Gamemode",
         "type": "Gamemode",
         "class": "Gamemode"
+    },
+    "playerAnimation": {
+        "import": "com.coolspy3.cspackets.datatypes.PlayerAnimation",
+        "type": "PlayerAnimation",
+        "class": "PlayerAnimation"
+    },
+    "entityMetadata": {
+        "import": "com.coolspy3.cspackets.datatypes.EntityMetadata",
+        "type": "EntityMetadata",
+        "class": "EntityMetadata"
+    },
+    "paintingDirection": {
+        "import": "com.coolspy3.cspackets.datatypes.PaintingDirection",
+        "type": "PaintingDirection",
+        "class": "PaintingDirection"
+    },
+    "entityStatus": {
+        "import": "com.coolspy3.cspackets.datatypes.EntityStatus",
+        "type": "EntityStatus",
+        "class": "EntityStatus"
+    },
+    "entityProperties": {
+        "import": "com.coolspy3.cspackets.datatypes.EntityProperties",
+        "type": "EntityProperties",
+        "class": "EntityProperties"
+    },
+    "gameState": {
+        "import": "com.coolspy3.cspackets.datatypes.GameState",
+        "type": "GameState",
+        "class": "GameState"
+    },
+    "nbt": {
+        "import": "net.querz.nbt.io.NamedTag",
+        "type": "NamedTag",
+        "class": "NamedTag"
+    },
+    "blockUpdateAction": {
+        "import": "com.coolspy3.cspackets.datatypes.BlockUpdateAction",
+        "type": "BlockUpdateAction",
+        "class": "BlockUpdateAction"
+    },
+    "playerAbilities": {
+        "import": "com.coolspy3.cspackets.datatypes.PlayerAbilities",
+        "type": "PlayerAbilities",
+        "class": "PlayerAbilities"
+    },
+    "scoreboardPosition": {
+        "import": "com.coolspy3.cspackets.datatypes.ScoreboardPosition",
+        "type": "ScoreboardPosition",
+        "class": "ScoreboardPosition"
     }
 }

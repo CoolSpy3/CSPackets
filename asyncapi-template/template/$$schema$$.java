@@ -11,7 +11,7 @@ import com.coolspy3.csmodloader.network.packet.PacketSpec;
 
 {% for fqn in schema.properties() | getImports -%}
 import {{ fqn }};
-{%- endfor %}
+{% endfor %}
 
 @PacketSpec(types = { {{ schema.properties() | classTypes }} }, direction = PacketDirection.{{ schema.property('direction').const() | upper }})
 public class {{ schemaName }} extends Packet
@@ -19,13 +19,13 @@ public class {{ schemaName }} extends Packet
 
     {% for prop in props -%}
     public final {{prop['type']}} {{prop['name']}};
-    {%- endfor %}
+    {% endfor %}
 
     public {{ schemaName }}({% for prop in props -%}{{prop['type']}} {{prop['name']}}{{prop['comma']}}{% endfor -%})
     {
         {% for prop in props -%}
         this.{{prop['name']}} = {{prop['name']}};
-        {%- endfor %}
+        {% endfor %}
     }
 
     public {{schemaName}}(Object[] args)

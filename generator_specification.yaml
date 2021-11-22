@@ -52,3 +52,689 @@ components:
                     const: string
                 position:
                     const: byte
+
+        TimeUpdatePacket:
+            type: object
+            properties:
+                id:
+                    const: "0x03"
+                direction:
+                    const: clientbound
+                worldAge:
+                    const: long
+                timeOfDay:
+                    const: long
+
+        EntityEquipmentPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x04"
+                direction:
+                    const: clientbound
+                entityId:
+                    const: varint
+                slot:
+                    const: short
+                item:
+                    const: slot
+
+        SpawnPointSetPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x05"
+                direction:
+                    const: clientbound
+                position:
+                    const: position
+
+        HealthUpdatePacket:
+            type: object
+            properties:
+                id:
+                    const: "0x06"
+                direction:
+                    const: clientbound
+                health:
+                    const: float
+                food:
+                    const: varint
+                saturation:
+                    const: float
+
+        RespawnPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x07"
+                direction:
+                    const: clientbound
+                dimension:
+                    const: dimension
+                difficulty:
+                    const: difficulty
+                gamemode:
+                    const: gamemode
+                levelType:
+                    const: string
+
+        ClientboundPlayerPositionAndLookPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x08"
+                direction:
+                    const: clientbound
+                x:
+                    const: double
+                y:
+                    const: double
+                z:
+                    const: double
+                yaw:
+                    const: double
+                pitch:
+                    const: double
+                flags:
+                    const: positionAndLookFlags
+
+        ClientboundChangeHeldItemPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x09"
+                direction:
+                    const: clientbound
+                slot:
+                    const: byte
+
+        UseBedPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x0A"
+                direction:
+                    const: clientbound
+                entityId:
+                    const: varint
+                position:
+                    const: position
+
+        ClientboundPlayerAnimationPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x0B"
+                direction:
+                    const: clientbound
+                animation:
+                    const: playerAnimation
+
+        PlayerSpawnPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x0C"
+                direction:
+                    const: clientbound
+                entityId:
+                    const: varint
+                uuid:
+                    const: uuid
+                x:
+                    const: int
+                y:
+                    const: int
+                z:
+                    const: int
+                yaw:
+                    const: int
+                pitch:
+                    const: int
+                currentItem:
+                    const: short
+                metadata:
+                    const: entityMetadata
+
+        CollectItemPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x0D"
+                direction:
+                    const: clientbound
+                collectedEntityId:
+                    const: varint
+                collectorEntityId:
+                    const: varint
+
+        MobSpawnPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x0F"
+                direction:
+                    const: clientbound
+                entityId:
+                    const: varint
+                type:
+                    const: byte
+                x:
+                    const: int
+                y:
+                    const: int
+                z:
+                    const: int
+                yaw:
+                    const: byte
+                pitch:
+                    const: byte
+                headPitch:
+                    const: byte
+                xVel:
+                    const: short
+                yVel:
+                    const: short
+                zVel:
+                    const: short
+                metadata:
+                    const: entityMetadata
+
+        PaintingSpawnPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x10"
+                direction:
+                    const: clientbound
+                name:
+                    const: string
+                position:
+                    const: position
+                paintingDirection:
+                    const: paintingDirection
+
+        ExperienceOrbSpawnPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x11"
+                direction:
+                    const: clientbound
+                name:
+                    const: string
+                entityId:
+                    const: varint
+                x:
+                    const: int
+                y:
+                    const: int
+                z:
+                    const: int
+                count:
+                    const: short
+
+        EntityVelocityPakcet:
+            type: object
+            properties:
+                id:
+                    const: "0x12"
+                direction:
+                    const: clientbound
+                entityId:
+                    const: varint
+                xVel:
+                    const: int
+                yVel:
+                    const: int
+                zVel:
+                    const: int
+
+        EntityPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x14"
+                direction:
+                    const: clientbound
+                entityId:
+                    const: varint
+
+        EntityRelativeMovePacket:
+            type: object
+            properties:
+                id:
+                    const: "0x15"
+                direction:
+                    const: clientbound
+                entityId:
+                    const: varint
+                dx:
+                    const: byte
+                dy:
+                    const: byte
+                dz:
+                    const: byte
+                onGround:
+                    const: boolean
+
+        EntityLookPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x16"
+                direction:
+                    const: clientbound
+                entityId:
+                    const: varint
+                yaw:
+                    const: byte
+                pitch:
+                    const: byte
+                onGround:
+                    const: boolean
+
+        EntityLookAndRelativeMovePacket:
+            type: object
+            properties:
+                id:
+                    const: "0x17"
+                direction:
+                    const: clientbound
+                entityId:
+                    const: varint
+                dx:
+                    const: byte
+                dy:
+                    const: byte
+                dz:
+                    const: byte
+                yaw:
+                    const: byte
+                pitch:
+                    const: byte
+                onGround:
+                    const: boolean
+
+        EntityTeleportPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x18"
+                direction:
+                    const: clientbound
+                entityId:
+                    const: varint
+                x:
+                    const: int
+                y:
+                    const: int
+                z:
+                    const: int
+                yaw:
+                    const: byte
+                pitch:
+                    const: byte
+                onGround:
+                    const: boolean
+
+        EntityHeadLookPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x19"
+                direction:
+                    const: clientbound
+                entityId:
+                    const: varint
+                headYaw:
+                    const: byte
+
+        EntityStatusPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x1A"
+                direction:
+                    const: clientbound
+                entityId:
+                    const: int
+                entityStatus:
+                    const: entityStatus
+
+        AttatchEntity:
+            type: object
+            properties:
+                id:
+                    const: "0x1B"
+                direction:
+                    const: clientbound
+                entityId:
+                    const: int
+                vehicleId:
+                    const: int
+                leash:
+                    const: boolean
+
+        EntityMetadataPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x1C"
+                direction:
+                    const: clientbound
+                entityId:
+                    const: varint
+                metadata:
+                    const: entityMetadata
+
+        EntityEffectPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x1D"
+                direction:
+                    const: clientbound
+                entityId:
+                    const: varint
+                effectId:
+                    const: byte
+                amplifier:
+                    const: byte
+                duration:
+                    const: varint
+                hideParticles:
+                    const: boolean
+
+        RemoveEntityEffectPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x1E"
+                direction:
+                    const: clientbound
+                entityId:
+                    const: varint
+                effectId:
+                    const: byte
+
+        SetExperiencePacket:
+            type: object
+            properties:
+                id:
+                    const: "0x1F"
+                direction:
+                    const: clientbound
+                experienceBar:
+                    const: float
+                level:
+                    const: varint
+                totalExperience:
+                    const: varint
+
+        SetEntityProperties:
+            type: object
+            properties:
+                id:
+                    const: "0x20"
+                direction:
+                    const: clientbound
+                entityId:
+                    const: varint
+                properties:
+                    const: entityProperties
+
+        BlockActionPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x24"
+                direction:
+                    const: clientbound
+                data1:
+                    const: byte
+                data2:
+                    const: byte
+                blockType:
+                    const: varint
+
+        BlockBreakAnimationPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x25"
+                direction:
+                    const: clientbound
+                entityId:
+                    const: varint
+                position:
+                    const: position
+                destroyStage:
+                    const: byte
+
+        SoundEffectPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x28"
+                direction:
+                    const: clientbound
+                effectId:
+                    const: int
+                position:
+                    const: position
+                data:
+                    const: int
+                disableRelativeVolume:
+                    const: int
+
+        GameStateChangePacket:
+            type: object
+            properties:
+                id:
+                    const: "0x2B"
+                direction:
+                    const: clientbound
+                reason:
+                    const: gameState
+                value:
+                    const: float
+
+        GlobalEntitySpawnPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x2C"
+                direction:
+                    const: clientbound
+                entityId:
+                    const: varint
+                type:
+                    const: byte
+                x:
+                    const: int
+                y:
+                    const: int
+                z:
+                    const: int
+
+        WindowClosePacket:
+            type: object
+            properties:
+                id:
+                    const: "0x2E"
+                direction:
+                    const: clientbound
+                windowId:
+                    const: byte
+
+        SlotSetPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x2F"
+                direction:
+                    const: clientbound
+                slot:
+                    const: short
+                slotData:
+                    const: slot
+
+        WindowPropertyPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x31"
+                direction:
+                    const: clientbound
+                property:
+                    const: short
+                value:
+                    const: short
+
+        TransactionConfirmPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x32"
+                direction:
+                    const: clientbound
+                windowId:
+                    const: byte
+                actionNumber:
+                    const: short
+                accepted:
+                    const: boolean
+
+        UpdateSign:
+            type: object
+            properties:
+                id:
+                    const: "0x33"
+                direction:
+                    const: clientbound
+                line1:
+                    const: string
+                line2:
+                    const: string
+                line3:
+                    const: string
+                line4:
+                    const: string
+
+        BlockEntityUpdate:
+            type: object
+            properties:
+                id:
+                    const: "0x35"
+                direction:
+                    const: clientbound
+                position:
+                    const: position
+                action:
+                    const: blockUpdateAction
+                nbt:
+                    const: nbt
+
+        SignEditorOpenPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x36"
+                direction:
+                    const: clientbound
+                position:
+                    const: position
+
+        PlayerAbilitiesPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x39"
+                direction:
+                    const: clientbound
+                flags:
+                    const: playerAbilities
+                flyingSpeed:
+                    const: float
+                fovModif:
+                    const: float
+
+        ScoreboardDisplayPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x3D"
+                direction:
+                    const: clientbound
+                position:
+                    const: scoreboardPosition
+                scoreName:
+                    const: string
+
+        DisconnectPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x40"
+                direction:
+                    const: clientbound
+                reason:
+                    const: string
+
+        DifficultyUpdatePacket:
+            type: object
+            properties:
+                id:
+                    const: "0x41"
+                direction:
+                    const: clientbound
+                difficulty:
+                    const: difficulty
+
+        SetPerspecitivePacket:
+            type: object
+            properties:
+                id:
+                    const: "0x43"
+                direction:
+                    const: clientbound
+                entityId:
+                    const: varint
+
+        SetPlayerListHeaderAndFooter:
+            type: object
+            properties:
+                id:
+                    const: "0x47"
+                direction:
+                    const: clientbound
+                header:
+                    const: string
+                footer:
+                    const: string
+
+        ResourcePackSendPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x48"
+                direction:
+                    const: clientbound
+                url:
+                    const: string
+                hash:
+                    const: string
+
+        EntityNBTUpdatePacket:
+            type: object
+            properties:
+                id:
+                    const: "0x49"
+                direction:
+                    const: clientbound
+                entityId:
+                    const: varint
+                nbt:
+                    const: nbt

@@ -26,8 +26,8 @@ public enum Gamemode
 
     public static Gamemode withId(byte id)
     {
-        for (Gamemode mode : values())
-            if (mode.id == id) return mode;
+        for (Gamemode val : values())
+            if (val.id == id) return val;
 
         return null;
     }

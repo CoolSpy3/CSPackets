@@ -10,12 +10,16 @@ targetCompatibility = 1.8
 
 repositories {
     jcenter()
+    maven {
+        url 'https://jitpack.io/'
+    }
 }
 
 dependencies {
     compileOnly 'com.coolspy3:CSModLoader:unspecified'
     compileOnly 'com.google.code.gson:gson:2.8.8'
     compileOnly group: 'commons-io', name: 'commons-io', version: '2.6'
+    implementation 'com.github.Querz:NBT:6.1'
     testImplementation     'junit:junit:4.13'
 }
 
@@ -40,14 +44,16 @@ task generatePacketFiles(type: NpxTask) {
     // Define the command line that npx should use
     workingDir = buildDir // Because templateDir can't be under it
     command = '@asyncapi/generator'
-    args = ['--force-write', 
+    args = ['--force-write',
         '-o', "${outputDir}/com/coolspy3/cspackets/packets",
         "${projectDir}/generator_specification.yaml",
         file(archiveTemplate.archiveFile).toURI()]
 
-    // Define the inputs and outputs of this task so that gradle only runs it 
+    // Define the inputs and outputs of this task so that gradle only runs it
     // when necessary.
     inputs.files(archiveTemplate.outputs)
+    inputs.files("${projectDir}/generator_specification.yaml")
+    inputs.files("${projectDir}/generator_types.json")
     outputs.dir(outputDir).withPropertyName("outputDir")
 
 }

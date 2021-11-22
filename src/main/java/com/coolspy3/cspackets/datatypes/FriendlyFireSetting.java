@@ -1,18 +1,17 @@
 package com.coolspy3.cspackets.datatypes;
 
-public enum Difficulty
+public enum FriendlyFireSetting
 {
-
-    PEACEFUL(0), EASY(1), NORMAL(2), HARD(3);
+    OFF(0), ON(1), SEE_FRIENDLY_INVISIBLES(3);
 
     public final byte id;
 
-    private Difficulty(int id)
+    private FriendlyFireSetting(int id)
     {
         this((byte) id);
     }
 
-    private Difficulty(byte id)
+    private FriendlyFireSetting(byte id)
     {
         this.id = id;
     }
@@ -22,12 +21,11 @@ public enum Difficulty
         return id;
     }
 
-    public static Difficulty withId(byte id)
+    public static FriendlyFireSetting withId(byte id)
     {
-        for (Difficulty val : values())
+        for (FriendlyFireSetting val : values())
             if (val.id == id) return val;
 
         return null;
     }
-
 }

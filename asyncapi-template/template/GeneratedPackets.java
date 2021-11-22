@@ -2,9 +2,7 @@ package com.coolspy3.cspackets.packets;
 
 import com.coolspy3.csmodloader.network.packet.PacketParser;
 
-// import com.coolspy3.csmodloader.network.packet.PacketParser;
-
-public final class AllPackets
+public final class GeneratedPackets
 {
 
     public static void registerPackets()
@@ -12,15 +10,15 @@ public final class AllPackets
         // Clientbound Packets
         {% for packet in asyncapi | clientboundPackets -%}
         PacketParser.registerPacket({{packet['name']}}.class, {{packet['name']}}::new, {{packet['id']}});
-        {%- endfor %}
+        {% endfor %}
 
         // Serverbound Packets
         {% for packet in asyncapi | serverboundPackets -%}
         PacketParser.registerPacket({{packet['name']}}.class, {{packet['name']}}::new, {{packet['id']}});
-        {%- endfor %}
+        {% endfor %}
     }
 
-    private AllPackets()
+    private GeneratedPackets()
     {}
 
 }

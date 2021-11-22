@@ -24,8 +24,8 @@ public enum Dimension
 
     public static Dimension withId(byte id)
     {
-        for (Dimension mode : values())
-            if (mode.id == id) return mode;
+        for (Dimension val : values())
+            if (val.id == id) return val;
 
         return null;
     }

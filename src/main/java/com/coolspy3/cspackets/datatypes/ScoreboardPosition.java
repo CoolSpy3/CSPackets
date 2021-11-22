@@ -1,18 +1,18 @@
 package com.coolspy3.cspackets.datatypes;
 
-public enum Difficulty
+public enum ScoreboardPosition
 {
 
-    PEACEFUL(0), EASY(1), NORMAL(2), HARD(3);
+    LIST(0), SIDEBAR(1), BELOW_NAME(2);
 
     public final byte id;
 
-    private Difficulty(int id)
+    private ScoreboardPosition(int id)
     {
         this((byte) id);
     }
 
-    private Difficulty(byte id)
+    private ScoreboardPosition(byte id)
     {
         this.id = id;
     }
@@ -22,9 +22,9 @@ public enum Difficulty
         return id;
     }
 
-    public static Difficulty withId(byte id)
+    public static ScoreboardPosition withId(byte id)
     {
-        for (Difficulty val : values())
+        for (ScoreboardPosition val : values())
             if (val.id == id) return val;
 
         return null;

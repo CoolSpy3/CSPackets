@@ -1,18 +1,18 @@
 package com.coolspy3.cspackets.datatypes;
 
-public enum Difficulty
+public enum PaintingDirection
 {
 
-    PEACEFUL(0), EASY(1), NORMAL(2), HARD(3);
+    NORTH(0), WEST(1), SOUTH(2), EAST(3);
 
     public final byte id;
 
-    private Difficulty(int id)
+    private PaintingDirection(int id)
     {
         this((byte) id);
     }
 
-    private Difficulty(byte id)
+    private PaintingDirection(byte id)
     {
         this.id = id;
     }
@@ -22,9 +22,9 @@ public enum Difficulty
         return id;
     }
 
-    public static Difficulty withId(byte id)
+    public static PaintingDirection withId(byte id)
     {
-        for (Difficulty val : values())
+        for (PaintingDirection val : values())
             if (val.id == id) return val;
 
         return null;
