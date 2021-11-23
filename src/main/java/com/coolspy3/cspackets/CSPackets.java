@@ -11,10 +11,12 @@ import com.coolspy3.cspackets.datatypes.EntityMetadata;
 import com.coolspy3.cspackets.datatypes.EntityModifier;
 import com.coolspy3.cspackets.datatypes.EntityProperties;
 import com.coolspy3.cspackets.datatypes.EntityStatus;
+import com.coolspy3.cspackets.datatypes.Face;
 import com.coolspy3.cspackets.datatypes.Gamemode;
 import com.coolspy3.cspackets.datatypes.PaintingDirection;
 import com.coolspy3.cspackets.datatypes.PlayerAbilities;
 import com.coolspy3.cspackets.datatypes.PlayerAnimation;
+import com.coolspy3.cspackets.datatypes.PlayerDiggingType;
 import com.coolspy3.cspackets.datatypes.PlayerPositionAndLookFlags;
 import com.coolspy3.cspackets.datatypes.Position;
 import com.coolspy3.cspackets.datatypes.ScoreboardPosition;
@@ -23,6 +25,7 @@ import com.coolspy3.cspackets.datatypes.Statistic;
 import com.coolspy3.cspackets.packets.BlockChangePacket;
 import com.coolspy3.cspackets.packets.CombatEventPacket;
 import com.coolspy3.cspackets.packets.EntityDestroyPacket;
+import com.coolspy3.cspackets.packets.EntityUsePacket;
 import com.coolspy3.cspackets.packets.ExplosionPacket;
 import com.coolspy3.cspackets.packets.GeneratedPackets;
 import com.coolspy3.cspackets.packets.MapUpdatePacket;
@@ -74,6 +77,9 @@ public class CSPackets implements Entrypoint
 		PacketParser.addParser(PacketParser.mappingParser(Byte.class, EntityStatus::getId,
 				EntityStatus::withId, EntityStatus.class));
 
+		PacketParser.addParser(
+				PacketParser.mappingParser(Byte.class, Face::getId, Face::withId, Face.class));
+
 		PacketParser.addParser(PacketParser.mappingParser(Byte.class, Gamemode::getId,
 				Gamemode::withId, Gamemode.class));
 
@@ -91,6 +97,9 @@ public class CSPackets implements Entrypoint
 
 		PacketParser.addParser(PacketParser.mappingParser(Byte.class, PlayerAnimation::getId,
 				PlayerAnimation::withId, PlayerAnimation.class));
+
+		PacketParser.addParser(PacketParser.mappingParser(Byte.class, PlayerDiggingType::getId,
+				PlayerDiggingType::withId, PlayerDiggingType.class));
 
 		PacketParser.addParser(new PlayerListPacket.PlayerInfo.Property.Parser());
 
@@ -169,6 +178,9 @@ public class CSPackets implements Entrypoint
 				new WorldBorderUpdatePacket.Serializer(), 0x44);
 
 		PacketParser.registerPacket(TitlePacket.class, new TitlePacket.Serializer(), 0x45);
+
+		// Serverbound Packets
+		PacketParser.registerPacket(EntityUsePacket.class, new EntityUsePacket.Serializer(), 0x02);
 	}
 
 }

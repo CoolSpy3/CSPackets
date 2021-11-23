@@ -139,7 +139,7 @@ components:
                 flags:
                     const: positionAndLookFlags
 
-        ClientboundChangeHeldItemPacket:
+        ClientboundHeldItemChangePacket:
             type: object
             properties:
                 id:
@@ -738,3 +738,133 @@ components:
                     const: varint
                 nbt:
                     const: nbt
+
+        ServerboundKeepAlivePacket:
+            type: object
+            properties:
+                id:
+                    const: "0x00"
+                direction:
+                    const: serverbound
+                keepAliveId:
+                    const: varint
+
+        ClientChatSendPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x01"
+                direction:
+                    const: serverbound
+                msg:
+                    const: string
+
+        PlayerPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x03"
+                direction:
+                    const: serverbound
+                onGround:
+                    const: boolean
+
+        PlayerPositionPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x04"
+                direction:
+                    const: serverbound
+                x:
+                    const: double
+                y:
+                    const: double
+                z:
+                    const: double
+                onGround:
+                    const: boolean
+
+        PlayerLookPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x05"
+                direction:
+                    const: serverbound
+                yaw:
+                    const: float
+                pitch:
+                    const: float
+                onGround:
+                    const: boolean
+
+        PlayerPositionAndLookPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x06"
+                direction:
+                    const: serverbound
+                x:
+                    const: double
+                y:
+                    const: double
+                z:
+                    const: double
+                yaw:
+                    const: float
+                pitch:
+                    const: float
+                onGround:
+                    const: boolean
+
+        PlayerDiggingPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x07"
+                direction:
+                    const: serverbound
+                status:
+                    const: playerDiggingType
+                location:
+                    const: position
+                face:
+                    const: face
+
+        BlockPlacePacket:
+            type: object
+            properties:
+                id:
+                    const: "0x08"
+                direction:
+                    const: serverbound
+                position:
+                    const: position
+                face:
+                    const: face
+                cursorX:
+                    const: byte
+                cursorY:
+                    const: byte
+                cursorZ:
+                    const: byte
+
+        ServerboundHeldItemChangePacket:
+            type: object
+            properties:
+                id:
+                    const: "0x09"
+                direction:
+                    const: serverbound
+                slot:
+                    const: short
+
+        ServerboundPlayerAnimationPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x0A"
+                direction:
+                    const: serverbound

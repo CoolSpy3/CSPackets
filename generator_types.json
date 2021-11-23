@@ -133,5 +133,15 @@
         "import": "com.coolspy3.cspackets.datatypes.ScoreboardPosition",
         "type": "ScoreboardPosition",
         "class": "ScoreboardPosition"
+    },
+    "playerDiggingType": {
+        "import": "com.coolspy3.cspackets.datatypes.PlayerDiggingType",
+        "type": "PlayerDiggingType",
+        "class": "PlayerDiggingType"
+    },
+    "face": {
+        "import": "com.coolspy3.cspackets.datatypes.Face",
+        "type": "Face",
+        "class": "face"
     }
 }
