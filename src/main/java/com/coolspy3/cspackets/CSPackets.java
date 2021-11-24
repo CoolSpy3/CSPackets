@@ -45,6 +45,8 @@ import com.coolspy3.cspackets.datatypes.TitleAction;
 import com.coolspy3.cspackets.datatypes.VehicleSteerFlags;
 import com.coolspy3.cspackets.datatypes.WorldBorderAction;
 import com.coolspy3.cspackets.packets.BlockChangePacket;
+import com.coolspy3.cspackets.packets.BulkChunkDataPacket;
+import com.coolspy3.cspackets.packets.ChunkDataPacket;
 import com.coolspy3.cspackets.packets.CombatEventPacket;
 import com.coolspy3.cspackets.packets.EntityDestroyPacket;
 import com.coolspy3.cspackets.packets.EntityUsePacket;
@@ -246,11 +248,16 @@ public class CSPackets implements Entrypoint
 		PacketParser.registerPacket(EntityDestroyPacket.class, new EntityDestroyPacket.Serializer(),
 				0x13);
 
+		PacketParser.registerPacket(ChunkDataPacket.class, new ChunkDataPacket.Serializer(), 0x21);
+
 		PacketParser.registerPacket(MultiblockChangePacket.class,
 				new MultiblockChangePacket.Serializer(), 0x22);
 
 		PacketParser.registerPacket(BlockChangePacket.class, new BlockChangePacket.Serializer(),
 				0x23);
+
+		PacketParser.registerPacket(BulkChunkDataPacket.class, new BulkChunkDataPacket.Serializer(),
+				0x26);
 
 		PacketParser.registerPacket(ExplosionPacket.class, new ExplosionPacket.Serializer(), 0x27);
 
