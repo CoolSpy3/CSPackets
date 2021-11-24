@@ -65,9 +65,9 @@
         "type": "ChatMode"
     },
     "clientAction": {
-        "import": "com.coolspy3.cspackets.datatypes.ClientStatus",
-        "class": "ClientStatus",
-        "type": "ClientStatus"
+        "import": "com.coolspy3.cspackets.datatypes.ClientAction",
+        "class": "ClientAction",
+        "type": "ClientAction"
     },
     "combatEvent": {
         "import": "com.coolspy3.cspackets.datatypes.CombatEvent",
@@ -117,7 +117,7 @@
     "face": {
         "import": "com.coolspy3.cspackets.datatypes.Face",
         "type": "Face",
-        "class": "face"
+        "class": "Face"
     },
     "friendlyFireSetting": {
         "import": "com.coolspy3.cspackets.datatypes.FriendlyFireSetting",

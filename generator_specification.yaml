@@ -931,7 +931,7 @@ components:
                 slot:
                     const: short
                 clickedItem:
-                    const: Slot
+                    const: slot
 
         EnchantItemPacket:
             type: object
@@ -1001,7 +1001,7 @@ components:
                 direction:
                     const: serverbound
                 action:
-                    const: clientStatus
+                    const: clientAction
 
         SpectatePacket:
             type: object
