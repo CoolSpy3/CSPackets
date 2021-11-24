@@ -88,7 +88,8 @@ function getProps(props) {
             out.push({ name: name, type: type, comma: ', ' })
         }
 
-        out[out.length - 1]['comma'] = ''
+        if (out.length > 0)
+            out[out.length - 1]['comma'] = ''
 
         return out
     } catch (err) {
