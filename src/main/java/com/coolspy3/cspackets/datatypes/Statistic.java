@@ -5,7 +5,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import com.coolspy3.csmodloader.network.packet.ObjectParser;
-import com.coolspy3.csmodloader.util.Utils;
+import com.coolspy3.csmodloader.network.packet.Packet;
+import com.coolspy3.csmodloader.network.packet.PacketParser;
 
 public class Statistic
 {
@@ -25,14 +26,15 @@ public class Statistic
         @Override
         public Statistic decode(InputStream is) throws IOException
         {
-            return new Statistic(Utils.readString(is), Utils.readVarInt(is));
+            return new Statistic(PacketParser.readObject(String.class, is),
+                    PacketParser.readWrappedObject(Packet.VarInt.class, is));
         }
 
         @Override
         public void encode(Statistic obj, OutputStream os) throws IOException
         {
-            Utils.writeString(obj.name, os);
-            Utils.writeVarInt(obj.value, os);
+            PacketParser.writeObject(String.class, obj.name, os);
+            PacketParser.writeObject(Packet.VarInt.class, obj.name, os);
         }
 
         @Override

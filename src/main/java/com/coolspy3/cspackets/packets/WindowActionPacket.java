@@ -10,6 +10,7 @@ import com.coolspy3.csmodloader.network.packet.PacketParser;
 import com.coolspy3.csmodloader.network.packet.PacketSerializer;
 import com.coolspy3.csmodloader.network.packet.PacketSpec;
 import com.coolspy3.cspackets.datatypes.Slot;
+import com.coolspy3.cspackets.datatypes.WindowTrigger;
 
 @PacketSpec(types = {}, direction = PacketDirection.SERVERBOUND)
 public class WindowActionPacket extends Packet
@@ -17,11 +18,11 @@ public class WindowActionPacket extends Packet
 
     public final byte windowId;
     public final short slot;
-    public final Trigger trigger;
+    public final WindowTrigger trigger;
     public final short actionId;
     public final Slot clickedItem;
 
-    public WindowActionPacket(byte windowId, short slot, Trigger trigger, short actionId,
+    public WindowActionPacket(byte windowId, short slot, WindowTrigger trigger, short actionId,
             Slot clickedItem)
     {
         this.windowId = windowId;
@@ -37,71 +38,6 @@ public class WindowActionPacket extends Packet
         return null;
     }
 
-    public static enum Trigger
-    {
-        LEFT_CLICK(0, 0), RIGHT_CLICK(0, 1), SHIFT_LEFT_CLICK(1, 0), SHIFT_RIGHT_CLICK(1, 1), NUM_0(
-                2, 0), NUM_1(2, 0), NUM_2(2, 1), NUM_3(2, 2), NUM_4(2, 3), NUM_5(2, 4), NUM_6(2,
-                        5), NUM_7(2, 6), NUM_8(2, 7), NUM_9(2, 8), MIDDLE_CLICK(3, 2), DROP(4,
-                                0), DROP_STACK(4,
-                                        1), LEFT_CLICK_OUTSIDE_OF_INVENTORY_WHILE_HOLDING_NOTHING(4,
-                                                0,
-                                                false), RIGHT_CLICK_OUTSIDE_OF_INVENTORY_WHILE_HOLDING_NOTHING(
-                                                        4, 1, false), START_LEFT_MOUSE_DRAG(5, 0,
-                                                                false), START_RIGHT_MOUSE_DRAG(5, 4,
-                                                                        false), ADD_LEFT_MOUSE_DRAG_SLOT(
-                                                                                5,
-                                                                                1), ADD_RIGHT_MOUSE_DRAG_SLOT(
-                                                                                        5,
-                                                                                        5), END_LEFT_MOUSE_DRAG(
-                                                                                                5,
-                                                                                                2,
-                                                                                                false), END_RIGHT_MOUSE_DRAG(
-                                                                                                        5,
-                                                                                                        6,
-                                                                                                        false), DOUBLE_CLICK(
-                                                                                                                6,
-                                                                                                                0);
-
-        public final byte button, mode;
-        public final boolean hasRealSlot;
-
-        private Trigger(int button, int mode)
-        {
-            this((byte) button, (byte) mode);
-        }
-
-        private Trigger(byte button, byte mode)
-        {
-            this(button, mode, true);
-        }
-
-        private Trigger(int button, int mode, boolean hasRealSlot)
-        {
-            this((byte) button, (byte) mode, hasRealSlot);
-        }
-
-        private Trigger(byte button, byte mode, boolean hasRealSlot)
-        {
-            this.button = button;
-            this.mode = mode;
-            this.hasRealSlot = hasRealSlot;
-        }
-
-        public static Trigger withId(byte button, byte mode, short slot)
-        {
-            return withId(button, mode, slot != -999);
-        }
-
-        public static Trigger withId(byte button, byte mode, boolean hasRealSlot)
-        {
-            for (Trigger val : values())
-                if (val.button == button && val.mode == mode && val.hasRealSlot == hasRealSlot)
-                    return val;
-
-            return null;
-        }
-
-    }
 
     public static class Serializer implements PacketSerializer<WindowActionPacket>
     {
@@ -115,26 +51,26 @@ public class WindowActionPacket extends Packet
         @Override
         public WindowActionPacket read(InputStream is) throws IOException
         {
-            byte windowId = (byte) is.read();
+            byte windowId = PacketParser.readObject(Byte.class, is);
             short slot = PacketParser.readObject(Short.class, is);
-            byte button = (byte) is.read();
+            byte button = PacketParser.readObject(Byte.class, is);
             short actionId = PacketParser.readObject(Short.class, is);
-            byte mode = (byte) is.read();
+            byte mode = PacketParser.readObject(Byte.class, is);
             Slot clickedItem = PacketParser.readObject(Slot.class, is);
 
-            return new WindowActionPacket(windowId, slot, Trigger.withId(button, mode, slot),
+            return new WindowActionPacket(windowId, slot, WindowTrigger.withId(button, mode, slot),
                     actionId, clickedItem);
         }
 
         @Override
         public void write(WindowActionPacket packet, OutputStream os) throws IOException
         {
-            os.write(packet.windowId);
+            PacketParser.writeObject(Byte.class, packet.windowId, os);
             PacketParser.writeObject(Short.class, packet.trigger.hasRealSlot ? packet.slot : -999,
                     os);
-            os.write(packet.trigger.button);
+            PacketParser.writeObject(Byte.class, packet.trigger.button, os);
             PacketParser.writeObject(Short.class, packet.actionId, os);
-            os.write(packet.trigger.mode);
+            PacketParser.writeObject(Byte.class, packet.trigger.mode, os);
             PacketParser.writeObject(Slot.class, packet.slot, os);
         }
 

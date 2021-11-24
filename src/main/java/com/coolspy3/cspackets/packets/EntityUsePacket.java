@@ -9,27 +9,28 @@ import com.coolspy3.csmodloader.network.packet.Packet;
 import com.coolspy3.csmodloader.network.packet.PacketParser;
 import com.coolspy3.csmodloader.network.packet.PacketSerializer;
 import com.coolspy3.csmodloader.network.packet.PacketSpec;
-import com.coolspy3.csmodloader.util.Utils;
+import com.coolspy3.cspackets.datatypes.EntityInteractionType;
 
 @PacketSpec(types = {}, direction = PacketDirection.SERVERBOUND)
 public class EntityUsePacket extends Packet
 {
 
     public final int target;
-    public final Type type;
+    public final EntityInteractionType type;
     public final float targetX, targetY, targetZ;
 
     public EntityUsePacket(int target, float targetX, float targetY, float targetZ)
     {
-        this(target, Type.INTERACT_AT, targetX, targetY, targetZ);
+        this(target, EntityInteractionType.INTERACT_AT, targetX, targetY, targetZ);
     }
 
-    public EntityUsePacket(int target, Type type)
+    public EntityUsePacket(int target, EntityInteractionType type)
     {
         this(target, type, 0, 0, 0);
     }
 
-    public EntityUsePacket(int target, Type type, float targetX, float targetY, float targetZ)
+    public EntityUsePacket(int target, EntityInteractionType type, float targetX, float targetY,
+            float targetZ)
     {
         this.target = target;
         this.type = type;
@@ -44,31 +45,6 @@ public class EntityUsePacket extends Packet
         return null;
     }
 
-    public static enum Type
-    {
-        INTERACT(0), ATTACK(1), INTERACT_AT(2);
-
-        public final int id;
-
-        private Type(int id)
-        {
-            this.id = id;
-        }
-
-        public Integer getId()
-        {
-            return id;
-        }
-
-        public static Type withId(int id)
-        {
-            for (Type val : values())
-                if (val.id == id) return val;
-
-            return null;
-        }
-    }
-
     public static class Serializer implements PacketSerializer<EntityUsePacket>
     {
 
@@ -81,10 +57,10 @@ public class EntityUsePacket extends Packet
         @Override
         public EntityUsePacket read(InputStream is) throws IOException
         {
-            int target = Utils.readVarInt(is);
-            Type type = Type.withId(Utils.readVarInt(is));
+            int target = PacketParser.readWrappedObject(Packet.VarInt.class, is);
+            EntityInteractionType type = PacketParser.readObject(EntityInteractionType.class, is);
 
-            if (type == Type.INTERACT_AT)
+            if (type == EntityInteractionType.INTERACT_AT)
                 return new EntityUsePacket(target, PacketParser.readObject(Float.class, is),
                         PacketParser.readObject(Float.class, is),
                         PacketParser.readObject(Float.class, is));
@@ -95,10 +71,10 @@ public class EntityUsePacket extends Packet
         @Override
         public void write(EntityUsePacket packet, OutputStream os) throws IOException
         {
-            Utils.writeVarInt(packet.target, os);
-            Utils.writeVarInt(packet.type.id, os);
+            PacketParser.writeObject(Packet.VarInt.class, packet.target, os);
+            PacketParser.writeObject(EntityInteractionType.class, packet.type, os);
 
-            if (packet.type != Type.INTERACT_AT) return;
+            if (packet.type != EntityInteractionType.INTERACT_AT) return;
 
             PacketParser.writeObject(Float.class, packet.targetX, os);
             PacketParser.writeObject(Float.class, packet.targetY, os);

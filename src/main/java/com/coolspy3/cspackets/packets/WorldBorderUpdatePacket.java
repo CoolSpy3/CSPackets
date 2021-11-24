@@ -10,44 +10,45 @@ import com.coolspy3.csmodloader.network.packet.PacketParser;
 import com.coolspy3.csmodloader.network.packet.PacketSerializer;
 import com.coolspy3.csmodloader.network.packet.PacketSpec;
 import com.coolspy3.csmodloader.util.Utils;
+import com.coolspy3.cspackets.datatypes.WorldBorderAction;
 
 @PacketSpec(types = {}, direction = PacketDirection.CLIENTBOUND)
 public class WorldBorderUpdatePacket extends Packet
 {
 
-    public final Action action;
+    public final WorldBorderAction action;
     public final double x, z, oldRadius, newRadius;
     public final long speed;
     public final int portalTeleportBoundary, warningTime, warningBlocks;
 
     public WorldBorderUpdatePacket(double radius)
     {
-        this(Action.SET_SIZE, 0, 0, 0, radius, 0, 0, 0, 0);
+        this(WorldBorderAction.SET_SIZE, 0, 0, 0, radius, 0, 0, 0, 0);
     }
 
     public WorldBorderUpdatePacket(double oldRadius, double newRadius, long speed)
     {
-        this(Action.LERP_SIZE, 0, 0, oldRadius, newRadius, speed, 0, 0, 0);
+        this(WorldBorderAction.LERP_SIZE, 0, 0, oldRadius, newRadius, speed, 0, 0, 0);
     }
 
     public WorldBorderUpdatePacket(double x, double z)
     {
-        this(Action.LERP_SIZE, x, z, 0, 0, 0, 0, 0, 0);
+        this(WorldBorderAction.LERP_SIZE, x, z, 0, 0, 0, 0, 0, 0);
     }
 
     public WorldBorderUpdatePacket(double x, double z, double oldRadius, double newRadius,
             long speed, int portalTeleportBoundary, int warningTime, int warningBlocks)
     {
-        this(Action.INITIALIZE, x, z, oldRadius, newRadius, speed, portalTeleportBoundary,
-                warningTime, warningBlocks);
+        this(WorldBorderAction.INITIALIZE, x, z, oldRadius, newRadius, speed,
+                portalTeleportBoundary, warningTime, warningBlocks);
     }
 
-    public WorldBorderUpdatePacket(Action action, int warningTime, int warningBlocks)
+    public WorldBorderUpdatePacket(WorldBorderAction action, int warningTime, int warningBlocks)
     {
         this(action, 0, 0, 0, 0, 0, 0, warningTime, warningBlocks);
     }
 
-    public WorldBorderUpdatePacket(Action action, double x, double z, double oldRadius,
+    public WorldBorderUpdatePacket(WorldBorderAction action, double x, double z, double oldRadius,
             double newRadius, long speed, int portalTeleportBoundary, int warningTime,
             int warningBlocks)
     {
@@ -68,34 +69,6 @@ public class WorldBorderUpdatePacket extends Packet
         return null;
     }
 
-    public static enum Action
-    {
-
-        SET_SIZE(0), LERP_SIZE(1), SET_CENTER(2), INITIALIZE(3), SET_WARNING_TIME(
-                4), SET_WARNING_BLOCKS(5);
-
-        public final int id;
-
-        private Action(int id)
-        {
-            this.id = id;
-        }
-
-        public Integer getId()
-        {
-            return id;
-        }
-
-        public static Action withId(int id)
-        {
-            for (Action val : values())
-                if (val.id == id) return val;
-
-            return null;
-        }
-
-    }
-
     public static class Serializer implements PacketSerializer<WorldBorderUpdatePacket>
     {
 
@@ -108,16 +81,18 @@ public class WorldBorderUpdatePacket extends Packet
         @Override
         public WorldBorderUpdatePacket read(InputStream is) throws IOException
         {
-            Action action = Action.withId(Utils.readVarInt(is));
+            WorldBorderAction action = PacketParser.readObject(WorldBorderAction.class, is);
 
             switch (action)
             {
                 case SET_SIZE:
-                    return new WorldBorderUpdatePacket(Utils.readVarInt(is));
+                    return new WorldBorderUpdatePacket(
+                            PacketParser.readWrappedObject(Packet.VarInt.class, is));
 
                 case LERP_SIZE:
                     return new WorldBorderUpdatePacket(PacketParser.readObject(Double.class, is),
-                            PacketParser.readObject(Double.class, is), Utils.readVarLong(is));
+                            PacketParser.readObject(Double.class, is),
+                            PacketParser.readWrappedObject(Packet.VarLong.class, is));
 
                 case SET_CENTER:
                     return new WorldBorderUpdatePacket(PacketParser.readObject(Double.class, is),
@@ -127,14 +102,19 @@ public class WorldBorderUpdatePacket extends Packet
                     return new WorldBorderUpdatePacket(PacketParser.readObject(Double.class, is),
                             PacketParser.readObject(Double.class, is),
                             PacketParser.readObject(Double.class, is),
-                            PacketParser.readObject(Double.class, is), Utils.readVarLong(is),
-                            Utils.readVarInt(is), Utils.readVarInt(is), Utils.readVarInt(is));
+                            PacketParser.readObject(Double.class, is),
+                            PacketParser.readWrappedObject(Packet.VarLong.class, is),
+                            PacketParser.readWrappedObject(Packet.VarInt.class, is),
+                            PacketParser.readWrappedObject(Packet.VarInt.class, is),
+                            PacketParser.readWrappedObject(Packet.VarInt.class, is));
 
                 case SET_WARNING_TIME:
-                    return new WorldBorderUpdatePacket(action, Utils.readVarInt(is), 0);
+                    return new WorldBorderUpdatePacket(action,
+                            PacketParser.readWrappedObject(Packet.VarInt.class, is), 0);
 
                 case SET_WARNING_BLOCKS:
-                    return new WorldBorderUpdatePacket(action, 0, Utils.readVarInt(is));
+                    return new WorldBorderUpdatePacket(action, 0,
+                            PacketParser.readWrappedObject(Packet.VarInt.class, is));
 
                 default:
                     return null;
@@ -156,7 +136,7 @@ public class WorldBorderUpdatePacket extends Packet
                 case LERP_SIZE:
                     PacketParser.writeObject(Double.class, packet.oldRadius, os);
                     PacketParser.writeObject(Double.class, packet.newRadius, os);
-                    Utils.writeVarLong(packet.speed, os);
+                    PacketParser.writeObject(Packet.VarLong.class, packet.speed, os);
 
                     break;
 
@@ -171,19 +151,20 @@ public class WorldBorderUpdatePacket extends Packet
                     PacketParser.writeObject(Double.class, packet.z, os);
                     PacketParser.writeObject(Double.class, packet.oldRadius, os);
                     PacketParser.writeObject(Double.class, packet.newRadius, os);
-                    Utils.writeVarLong(packet.speed, os);
-                    Utils.writeVarInt(packet.portalTeleportBoundary, os);
-                    Utils.writeVarInt(packet.warningTime, os);
-                    Utils.writeVarInt(packet.warningBlocks, os);
+                    PacketParser.writeObject(Packet.VarLong.class, packet.speed, os);
+                    PacketParser.writeObject(Packet.VarInt.class, packet.portalTeleportBoundary,
+                            os);
+                    PacketParser.writeObject(Packet.VarInt.class, packet.warningTime, os);
+                    PacketParser.writeObject(Packet.VarInt.class, packet.warningBlocks, os);
 
                     break;
 
                 case SET_WARNING_TIME:
-                    Utils.writeVarInt(packet.warningTime, os);
+                    PacketParser.writeObject(Packet.VarInt.class, packet.warningTime, os);
                     break;
 
                 case SET_WARNING_BLOCKS:
-                    Utils.writeVarInt(packet.warningBlocks, os);
+                    PacketParser.writeObject(Packet.VarInt.class, packet.warningBlocks, os);
                     break;
 
                 default:

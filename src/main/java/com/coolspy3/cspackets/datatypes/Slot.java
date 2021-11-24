@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import com.coolspy3.csmodloader.network.packet.ObjectParser;
+import com.coolspy3.csmodloader.network.packet.Packet;
 import com.coolspy3.csmodloader.network.packet.PacketParser;
 import com.coolspy3.csmodloader.util.Utils;
 
@@ -32,11 +33,11 @@ public class Slot
         @Override
         public Slot decode(InputStream is) throws IOException
         {
-            boolean present = is.read() == 0x01;
+            boolean present = PacketParser.readObject(Boolean.class, is);
 
             if (present)
             {
-                return new Slot(true, Utils.readVarInt(is), (byte) is.read(),
+                return new Slot(true, Utils.readVarInt(is), PacketParser.readObject(Byte.class, is),
                         PacketParser.readObject(NamedTag.class, is));
             }
 
@@ -46,17 +47,14 @@ public class Slot
         @Override
         public void encode(Slot obj, OutputStream os) throws IOException
         {
+            PacketParser.writeObject(Boolean.class, obj.present, os);
+
             if (obj.present)
             {
-                os.write(0x01);
-                Utils.writeVarInt(obj.itemId, os);
-                os.write(obj.itemCount);
+                PacketParser.writeObject(Packet.VarInt.class, obj.itemId, os);
+                PacketParser.writeObject(Byte.class, obj.itemCount, os);
                 PacketParser.writeObject(NamedTag.class, obj.nbt, os);
-
-                return;
             }
-
-            os.write(0x00);
         }
 
         @Override

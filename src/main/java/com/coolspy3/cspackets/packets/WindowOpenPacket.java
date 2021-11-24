@@ -9,7 +9,6 @@ import com.coolspy3.csmodloader.network.packet.Packet;
 import com.coolspy3.csmodloader.network.packet.PacketParser;
 import com.coolspy3.csmodloader.network.packet.PacketSerializer;
 import com.coolspy3.csmodloader.network.packet.PacketSpec;
-import com.coolspy3.csmodloader.util.Utils;
 
 @PacketSpec(types = {}, direction = PacketDirection.CLIENTBOUND)
 public class WindowOpenPacket extends Packet
@@ -56,10 +55,10 @@ public class WindowOpenPacket extends Packet
         @Override
         public WindowOpenPacket read(InputStream is) throws IOException
         {
-            byte windowId = (byte) is.read();
-            String windowType = Utils.readString(is);
-            String windowTitle = Utils.readString(is);
-            byte numSlots = (byte) is.read();
+            byte windowId = PacketParser.readObject(Byte.class, is);
+            String windowType = PacketParser.readObject(String.class, is);
+            String windowTitle = PacketParser.readObject(String.class, is);
+            byte numSlots = PacketParser.readObject(Byte.class, is);
 
             if (windowType.equals("EntityHorse")) return new WindowOpenPacket(windowId, windowTitle,
                     numSlots, PacketParser.readObject(Integer.class, is));
@@ -70,10 +69,10 @@ public class WindowOpenPacket extends Packet
         @Override
         public void write(WindowOpenPacket packet, OutputStream os) throws IOException
         {
-            os.write(packet.windowId);
-            Utils.writeString(packet.windowType, os);
-            Utils.writeString(packet.windowTitle, os);
-            os.write(packet.numSlots);
+            PacketParser.writeObject(Byte.class, packet.windowId, os);
+            PacketParser.writeObject(String.class, packet.windowType, os);
+            PacketParser.writeObject(String.class, packet.windowTitle, os);
+            PacketParser.writeObject(Byte.class, packet.numSlots, os);
 
             if (packet.windowType.equals("EntityHorse"))
                 PacketParser.writeObject(Integer.class, packet.entityId, os);

@@ -9,7 +9,6 @@ import com.coolspy3.csmodloader.network.packet.Packet;
 import com.coolspy3.csmodloader.network.packet.PacketParser;
 import com.coolspy3.csmodloader.network.packet.PacketSerializer;
 import com.coolspy3.csmodloader.network.packet.PacketSpec;
-import com.coolspy3.csmodloader.util.Utils;
 import com.coolspy3.cspackets.datatypes.Position;
 
 @PacketSpec(types = {}, direction = PacketDirection.SERVERBOUND)
@@ -17,17 +16,17 @@ public class TabCompletePacket extends Packet
 {
 
     public final String text;
-    public final Position lookedAtBlock;
+    public final Position targetedBlock;
 
     public TabCompletePacket(String text)
     {
         this(text, null);
     }
 
-    public TabCompletePacket(String text, Position lookedAtBlock)
+    public TabCompletePacket(String text, Position targetedBlock)
     {
         this.text = text;
-        this.lookedAtBlock = lookedAtBlock;
+        this.targetedBlock = targetedBlock;
     }
 
     @Override
@@ -48,9 +47,9 @@ public class TabCompletePacket extends Packet
         @Override
         public TabCompletePacket read(InputStream is) throws IOException
         {
-            String text = Utils.readString(is);
+            String text = PacketParser.readObject(String.class, is);
 
-            if (is.read() == 0x01)
+            if (PacketParser.readObject(Boolean.class, is))
                 return new TabCompletePacket(text, PacketParser.readObject(Position.class, is));
 
             return new TabCompletePacket(text);
@@ -59,15 +58,11 @@ public class TabCompletePacket extends Packet
         @Override
         public void write(TabCompletePacket packet, OutputStream os) throws IOException
         {
-            Utils.writeString(packet.text, os);
+            PacketParser.writeObject(String.class, packet.text, os);
+            PacketParser.writeObject(Boolean.class, packet.targetedBlock != null, os);
 
-            if (packet.lookedAtBlock != null)
-            {
-                os.write(0x01);
-                PacketParser.writeObject(Position.class, packet.lookedAtBlock, os);
-            }
-            else
-                os.write(0x00);
+            if (packet.targetedBlock != null)
+                PacketParser.writeObject(Position.class, packet.targetedBlock, os);
         }
 
     }

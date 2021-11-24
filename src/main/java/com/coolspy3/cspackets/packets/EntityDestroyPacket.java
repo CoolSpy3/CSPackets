@@ -6,6 +6,7 @@ import java.io.OutputStream;
 
 import com.coolspy3.csmodloader.network.PacketDirection;
 import com.coolspy3.csmodloader.network.packet.Packet;
+import com.coolspy3.csmodloader.network.packet.PacketParser;
 import com.coolspy3.csmodloader.network.packet.PacketSerializer;
 import com.coolspy3.csmodloader.network.packet.PacketSpec;
 import com.coolspy3.csmodloader.util.Utils;
@@ -44,9 +45,7 @@ public class EntityDestroyPacket extends Packet
             int[] entityIds = new int[count];
 
             for (int i = 0; i < count; i++)
-            {
-                entityIds[i] = Utils.readVarInt(is);
-            }
+                entityIds[i] = PacketParser.readWrappedObject(Packet.VarInt.class, is);
 
             return new EntityDestroyPacket(entityIds);
         }
@@ -57,9 +56,7 @@ public class EntityDestroyPacket extends Packet
             Utils.writeVarInt(packet.entityIds.length, os);
 
             for (int i = 0; i < packet.entityIds.length; i++)
-            {
-                Utils.writeVarInt(packet.entityIds[i], os);
-            }
+                PacketParser.writeObject(Packet.VarInt.class, packet.entityIds[i], os);
         }
 
     }

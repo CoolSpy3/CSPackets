@@ -42,7 +42,7 @@ public class WindowItemsPacket extends Packet
         @Override
         public WindowItemsPacket read(InputStream is) throws IOException
         {
-            byte windowId = (byte) is.read();
+            byte windowId = PacketParser.readObject(Byte.class, is);
             short count = PacketParser.readObject(Short.class, is);
             Slot[] slots = new Slot[count];
 
@@ -55,7 +55,7 @@ public class WindowItemsPacket extends Packet
         @Override
         public void write(WindowItemsPacket packet, OutputStream os) throws IOException
         {
-            os.write(packet.windowId);
+            PacketParser.writeObject(Byte.class, packet.windowId, os);
             PacketParser.writeObject(Short.class, packet.slots.length, os);
 
             for (short i = 0; i < packet.slots.length; i++)

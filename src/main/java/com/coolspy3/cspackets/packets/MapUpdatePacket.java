@@ -6,6 +6,7 @@ import java.io.OutputStream;
 
 import com.coolspy3.csmodloader.network.PacketDirection;
 import com.coolspy3.csmodloader.network.packet.Packet;
+import com.coolspy3.csmodloader.network.packet.PacketParser;
 import com.coolspy3.csmodloader.network.packet.PacketSerializer;
 import com.coolspy3.csmodloader.network.packet.PacketSpec;
 import com.coolspy3.csmodloader.util.Utils;
@@ -56,9 +57,9 @@ public class MapUpdatePacket extends Packet
         @Override
         public MapUpdatePacket read(InputStream is) throws IOException
         {
-            int mapId = Utils.readVarInt(is);
-            byte scale = (byte) is.read();
-            int count = Utils.readVarInt(is);
+            int mapId = PacketParser.readWrappedObject(Packet.VarInt.class, is);
+            byte scale = PacketParser.readObject(Byte.class, is);
+            int count = PacketParser.readWrappedObject(Packet.VarInt.class, is);
             byte[][] icons = new byte[count][3];
 
             for (int i = 0; i < count; i++)
@@ -68,15 +69,15 @@ public class MapUpdatePacket extends Packet
                 icons[i][2] = (byte) is.read();
             }
 
-            byte updatedColumns = (byte) is.read();
+            byte updatedColumns = PacketParser.readObject(Byte.class, is);
 
             if (updatedColumns == 0) return new MapUpdatePacket(mapId, scale, icons);
 
-            byte updatedRows = (byte) is.read();
-            byte offsetX = (byte) is.read();
-            byte offsetZ = (byte) is.read();
-            count = Utils.readVarInt(is);
-            byte[] data = new byte[count];
+            byte updatedRows = PacketParser.readObject(Byte.class, is);
+            byte offsetX = PacketParser.readObject(Byte.class, is);
+            byte offsetZ = PacketParser.readObject(Byte.class, is);
+            count = PacketParser.readWrappedObject(Packet.VarInt.class, is);
+            byte[] data = Utils.readNBytes(is, count);
 
             return new MapUpdatePacket(mapId, scale, icons, updatedColumns, updatedRows, offsetX,
                     offsetZ, data);
@@ -85,9 +86,9 @@ public class MapUpdatePacket extends Packet
         @Override
         public void write(MapUpdatePacket packet, OutputStream os) throws IOException
         {
-            Utils.writeVarInt(packet.mapId, os);
-            os.write(packet.scale);
-            Utils.writeVarInt(packet.icons.length, os);
+            PacketParser.writeObject(Packet.VarInt.class, packet.mapId, os);
+            PacketParser.writeObject(Byte.class, packet.scale, os);
+            PacketParser.writeObject(Packet.VarInt.class, packet.icons.length, os);
 
             for (int i = 0; i < packet.icons.length; i++)
             {
@@ -96,17 +97,16 @@ public class MapUpdatePacket extends Packet
                 os.write(packet.icons[i][2]);
             }
 
-            os.write(packet.updatedColumns);
+            PacketParser.writeObject(Byte.class, packet.updatedColumns, os);
 
             if (packet.updatedColumns == 0) return;
 
-            os.write(packet.updatedRows);
-            os.write(packet.offsetX);
-            os.write(packet.offsetZ);
-            Utils.writeVarInt(packet.data.length, os);
+            PacketParser.writeObject(Byte.class, packet.updatedRows, os);
+            PacketParser.writeObject(Byte.class, packet.offsetX, os);
+            PacketParser.writeObject(Byte.class, packet.offsetZ, os);
+            PacketParser.writeObject(Packet.VarInt.class, packet.data.length, os);
 
-            for (int i = 0; i < packet.data.length; i++)
-                os.write(packet.data[i]);
+            os.write(packet.data);
         }
 
     }

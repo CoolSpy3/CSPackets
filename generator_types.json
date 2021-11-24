@@ -1,182 +1,252 @@
 {
     "boolean": {
         "import": "none",
-        "type": "boolean",
-        "class": "Boolean"
+        "class": "Boolean",
+        "type": "boolean"
     },
     "byte": {
         "import": "none",
-        "type": "byte",
-        "class": "Byte"
+        "class": "Byte",
+        "type": "byte"
     },
     "short": {
         "import": "none",
-        "type": "short",
-        "class": "Short"
+        "class": "Short",
+        "type": "short"
     },
     "int": {
         "import": "none",
-        "type": "int",
-        "class": "Integer"
+        "class": "Integer",
+        "type": "int"
     },
     "long": {
         "import": "none",
-        "type": "long",
-        "class": "Long"
+        "class": "Long",
+        "type": "long"
     },
     "float": {
         "import": "none",
-        "type": "float",
-        "class": "Float"
+        "class": "Float",
+        "type": "float"
     },
     "double": {
         "import": "none",
-        "type": "double",
-        "class": "Double"
+        "class": "Double",
+        "type": "double"
     },
     "string": {
         "import": "none",
-        "type": "String",
-        "class": "String"
+        "class": "String",
+        "type": "String"
     },
     "varint": {
         "import": "none",
-        "type": "int",
-        "class": "Packet.VarInt"
+        "class": "Packet.VarInt",
+        "type": "int"
     },
     "varlong": {
         "import": "none",
-        "type": "long",
-        "class": "Packet.VarLong"
+        "class": "Packet.VarLong",
+        "type": "long"
     },
     "uuid": {
         "import": "java.util.UUID",
-        "type": "UUID",
-        "class": "UUID"
+        "class": "UUID",
+        "type": "UUID"
     },
     "blockUpdateAction": {
         "import": "com.coolspy3.cspackets.datatypes.BlockUpdateAction",
-        "type": "BlockUpdateAction",
-        "class": "BlockUpdateAction"
+        "class": "BlockUpdateAction",
+        "type": "BlockUpdateAction"
     },
     "chatMode": {
         "import": "com.coolspy3.cspackets.datatypes.ChatMode",
-        "type": "ChatMode",
-        "class": "ChatMode"
+        "class": "ChatMode",
+        "type": "ChatMode"
     },
     "clientAction": {
         "import": "com.coolspy3.cspackets.datatypes.ClientStatus",
-        "type": "ClientStatus",
-        "class": "ClientStatus"
+        "class": "ClientStatus",
+        "type": "ClientStatus"
+    },
+    "combatEvent": {
+        "import": "com.coolspy3.cspackets.datatypes.CombatEvent",
+        "class": "CombatEvent",
+        "type": "CombatEvent"
     },
     "difficulty": {
         "import": "com.coolspy3.cspackets.datatypes.Difficulty",
-        "type": "Difficulty",
-        "class": "Difficulty"
+        "class": "Difficulty",
+        "type": "Difficulty"
     },
     "dimension": {
         "import": "com.coolspy3.cspackets.datatypes.Dimension",
-        "type": "Dimension",
-        "class": "Dimension"
+        "class": "Dimension",
+        "type": "Dimension"
+    },
+    "entityInteractionType": {
+        "import": "com.coolspy3.cspackets.datatypes.EntityInteractionType",
+        "class": "EntityInteractionType",
+        "type": "EntityInteractionType"
     },
     "entityMetadata": {
         "import": "com.coolspy3.cspackets.datatypes.EntityMetadata",
-        "type": "EntityMetadata",
-        "class": "EntityMetadata"
+        "class": "EntityMetadata",
+        "type": "EntityMetadata"
+    },
+    "entityModifier": {
+        "import": "com.coolspy3.cspackets.datatypes.EntityModifier",
+        "class": "EntityModifier",
+        "type": "EntityModifier"
+    },
+    "entityModifierOperation": {
+        "import": "com.coolspy3.cspackets.datatypes.EntityModifier",
+        "class": "EntityModifier.Operation",
+        "type": "EntityModifier.Operation"
     },
     "entityProperties": {
         "import": "com.coolspy3.cspackets.datatypes.EntityProperties",
-        "type": "EntityProperties",
-        "class": "EntityProperties"
+        "class": "EntityProperties",
+        "type": "EntityProperties"
     },
     "entityStatus": {
         "import": "com.coolspy3.cspackets.datatypes.EntityStatus",
-        "type": "EntityStatus",
-        "class": "EntityStatus"
+        "class": "EntityStatus",
+        "type": "EntityStatus"
     },
     "face": {
         "import": "com.coolspy3.cspackets.datatypes.Face",
         "type": "Face",
         "class": "face"
     },
+    "friendlyFireSetting": {
+        "import": "com.coolspy3.cspackets.datatypes.FriendlyFireSetting",
+        "class": "FriendlyFireSetting",
+        "type": "FriendlyFireSetting"
+    },
     "gamemode": {
         "import": "com.coolspy3.cspackets.datatypes.Gamemode",
-        "type": "Gamemode",
-        "class": "Gamemode"
+        "class": "Gamemode",
+        "type": "Gamemode"
     },
     "gameState": {
         "import": "com.coolspy3.cspackets.datatypes.GameState",
-        "type": "GameState",
-        "class": "GameState"
+        "class": "GameState",
+        "type": "GameState"
     },
     "locale": {
         "import": "java.util.Locale",
-        "type": "Locale",
-        "class": "Locale"
+        "class": "Locale",
+        "type": "Locale"
+    },
+    "mcColor": {
+        "import": "com.coolspy3.cspackets.datatypes.MCColor",
+        "class": "MCColor",
+        "type": "MCColor"
+    },
+    "nameTagVisibility": {
+        "import": "com.coolspy3.cspackets.datatypes.NameTagVisibility",
+        "class": "NameTagVisibility",
+        "type": "NameTagVisibility"
     },
     "paintingDirection": {
         "import": "com.coolspy3.cspackets.datatypes.PaintingDirection",
-        "type": "PaintingDirection",
-        "class": "PaintingDirection"
+        "class": "PaintingDirection",
+        "type": "PaintingDirection"
     },
     "clientboundPlayerAbilities": {
         "import": "com.coolspy3.cspackets.datatypes.PlayerAbilities",
-        "type": "PlayerAbilities",
-        "class": "PlayerAbilities.Clientbound"
+        "class": "PlayerAbilities",
+        "type": "PlayerAbilities.Clientbound"
     },
     "serverboundPlayerAbilities": {
         "import": "com.coolspy3.cspackets.datatypes.PlayerAbilities",
-        "type": "PlayerAbilities",
-        "class": "PlayerAbilities.Serverbound"
+        "class": "PlayerAbilities",
+        "type": "PlayerAbilities.Serverbound"
     },
     "playerAction": {
         "import": "com.coolspy3.cspackets.datatypes.PlayerAction",
-        "type": "PlayerAction",
-        "class": "PlayerAction"
+        "class": "PlayerAction",
+        "type": "PlayerAction"
     },
     "playerAnimation": {
         "import": "com.coolspy3.cspackets.datatypes.PlayerAnimation",
-        "type": "PlayerAnimation",
-        "class": "PlayerAnimation"
+        "class": "PlayerAnimation",
+        "type": "PlayerAnimation"
     },
     "playerDiggingType": {
         "import": "com.coolspy3.cspackets.datatypes.PlayerDiggingType",
-        "type": "PlayerDiggingType",
-        "class": "PlayerDiggingType"
+        "class": "PlayerDiggingType",
+        "type": "PlayerDiggingType"
     },
     "position": {
         "import": "com.coolspy3.cspackets.datatypes.Position",
-        "type": "Position",
-        "class": "Position"
+        "class": "Position",
+        "type": "Position"
     },
     "positionAndLookFlags": {
         "import": "com.coolspy3.cspackets.datatypes.PlayerPositionAndLookFlags",
-        "type": "PlayerPositionAndLookFlags",
-        "class": "PlayerPositionAndLookFlags"
+        "class": "PlayerPositionAndLookFlags",
+        "type": "PlayerPositionAndLookFlags"
     },
     "nbt": {
         "import": "net.querz.nbt.io.NamedTag",
-        "type": "NamedTag",
-        "class": "NamedTag"
+        "class": "NamedTag",
+        "type": "NamedTag"
+    },
+    "resourcePackStatus": {
+        "import": "com.coolspy3.cspackets.datatypes.ResourcePackStatus",
+        "class": "ResourcePackStatus",
+        "type": "ResourcePackStatus"
+    },
+    "scoreboardObjectiveAction": {
+        "import": "com.coolspy3.cspackets.datatypes.ScoreboardObjectiveAction",
+        "class": "ScoreboardObjectiveAction",
+        "type": "ScoreboardObjectiveAction"
+    },
+    "scoreboardObjectiveType": {
+        "import": "com.coolspy3.cspackets.datatypes.ScoreboardObjectiveType",
+        "class": "ScoreboardObjectiveType",
+        "type": "ScoreboardObjectiveType"
     },
     "scoreboardPosition": {
         "import": "com.coolspy3.cspackets.datatypes.ScoreboardPosition",
-        "type": "ScoreboardPosition",
-        "class": "ScoreboardPosition"
+        "class": "ScoreboardPosition",
+        "type": "ScoreboardPosition"
     },
     "skinParts": {
         "import": "com.coolspy3.cspackets.datatypes.SkinParts",
-        "type": "SkinParts",
-        "class": "SkinParts"
+        "class": "SkinParts",
+        "type": "SkinParts"
     },
     "slot": {
         "import": "com.coolspy3.cspackets.datatypes.Slot",
-        "type": "Slot",
-        "class": "Slot"
+        "class": "Slot",
+        "type": "Slot"
+    },
+    "statistic": {
+        "import": "com.coolspy3.cspackets.datatypes.Statistic",
+        "class": "Statistic",
+        "type": "Statistic"
     },
     "steerFlags": {
         "import": "com.coolspy3.cspackets.datatypes.VehicleSteerFlags",
-        "type": "VehicleSteerFlags",
-        "class": "VehicleSteerFlags"
+        "class": "VehicleSteerFlags",
+        "type": "VehicleSteerFlags"
+    },
+    "teamAction": {
+        "import": "com.coolspy3.cspackets.datatypes.TeamAction",
+        "class": "TeamAction",
+        "type": "TeamAction"
+    },
+    "titleAction": {
+        "import": "com.coolspy3.cspackets.datatypes.TitleAction",
+        "class": "TitleAction",
+        "type": "TitleAction"
+    },
+    "worldBorderAction": {
+        "import": "com.coolspy3.cspackets.datatypes.WorldBorderAction",
+        "class": "WorldBorderAction",
+        "type": "WorldBorderAction"
     }
 }

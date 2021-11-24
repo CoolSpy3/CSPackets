@@ -6,6 +6,7 @@ import java.io.OutputStream;
 
 import com.coolspy3.csmodloader.network.PacketDirection;
 import com.coolspy3.csmodloader.network.packet.Packet;
+import com.coolspy3.csmodloader.network.packet.PacketParser;
 import com.coolspy3.csmodloader.network.packet.PacketSerializer;
 import com.coolspy3.csmodloader.network.packet.PacketSpec;
 import com.coolspy3.csmodloader.util.Utils;
@@ -43,7 +44,7 @@ public class TabCompleteResponsePacket extends Packet
             String[] matches = new String[count];
 
             for (int i = 0; i < count; i++)
-                matches[i] = Utils.readString(is);
+                matches[i] = PacketParser.readObject(String.class, is);
 
             return new TabCompleteResponsePacket(matches);
         }
@@ -54,7 +55,7 @@ public class TabCompleteResponsePacket extends Packet
             Utils.writeVarInt(packet.matches.length, os);
 
             for (int i = 0; i < packet.matches.length; i++)
-                Utils.writeString(packet.matches[i], os);
+                PacketParser.writeObject(Packet.VarInt.class, packet.matches[i], os);
         }
 
     }

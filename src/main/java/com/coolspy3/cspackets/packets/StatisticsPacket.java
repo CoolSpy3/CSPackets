@@ -53,8 +53,10 @@ public class StatisticsPacket extends Packet
         @Override
         public void write(StatisticsPacket packet, OutputStream os) throws IOException
         {
-            // TODO Auto-generated method stub
+            Utils.writeVarInt(packet.statistics.length, os);
 
+            for (int i = 0; i < packet.statistics.length; i++)
+                PacketParser.writeObject(Statistic.class, packet.statistics[i], os);
         }
 
     }

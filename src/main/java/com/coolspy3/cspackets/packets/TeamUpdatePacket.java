@@ -6,31 +6,33 @@ import java.io.OutputStream;
 
 import com.coolspy3.csmodloader.network.PacketDirection;
 import com.coolspy3.csmodloader.network.packet.Packet;
+import com.coolspy3.csmodloader.network.packet.PacketParser;
 import com.coolspy3.csmodloader.network.packet.PacketSerializer;
 import com.coolspy3.csmodloader.network.packet.PacketSpec;
 import com.coolspy3.csmodloader.util.Utils;
 import com.coolspy3.cspackets.datatypes.FriendlyFireSetting;
 import com.coolspy3.cspackets.datatypes.MCColor;
 import com.coolspy3.cspackets.datatypes.NameTagVisibility;
+import com.coolspy3.cspackets.datatypes.TeamAction;
 
 @PacketSpec(types = {}, direction = PacketDirection.CLIENTBOUND)
 public class TeamUpdatePacket extends Packet
 {
 
     public final String teamName;
-    public final Mode mode;
+    public final TeamAction action;
     public final String displayName, prefix, suffix;
     public final FriendlyFireSetting friendlyFire;
     public final NameTagVisibility nameTagVisibility;
     public final MCColor color;
     public final String[] players;
 
-    public TeamUpdatePacket(String teamName, Mode mode, String displayName, String prefix,
+    public TeamUpdatePacket(String teamName, TeamAction action, String displayName, String prefix,
             String suffix, FriendlyFireSetting friendlyFire, NameTagVisibility nameTagVisibility,
             MCColor color, String[] players)
     {
         this.teamName = teamName;
-        this.mode = mode;
+        this.action = action;
         this.displayName = displayName;
         this.prefix = prefix;
         this.suffix = suffix;
@@ -46,36 +48,6 @@ public class TeamUpdatePacket extends Packet
         return null;
     }
 
-    public static enum Mode
-    {
-        CREATE(0), REMOVE(1), UPDATE(2), ADD_PLAYERS(3), REMOVE_PLAYERS(4);
-
-        public final byte id;
-
-        private Mode(int id)
-        {
-            this((byte) id);
-        }
-
-        private Mode(byte id)
-        {
-            this.id = id;
-        }
-
-        public Byte getId()
-        {
-            return id;
-        }
-
-        public static Mode withId(byte id)
-        {
-            for (Mode val : values())
-                if (val.id == id) return val;
-
-            return null;
-        }
-    }
-
     public static class Serializer implements PacketSerializer<TeamUpdatePacket>
     {
 
@@ -88,8 +60,8 @@ public class TeamUpdatePacket extends Packet
         @Override
         public TeamUpdatePacket read(InputStream is) throws IOException
         {
-            String teamName = Utils.readString(is);
-            Mode mode = Mode.withId((byte) is.read());
+            String teamName = PacketParser.readObject(String.class, is);
+            TeamAction action = PacketParser.readObject(TeamAction.class, is);
             String displayName = null;
             String prefix = null;
             String suffix = null;
@@ -98,52 +70,53 @@ public class TeamUpdatePacket extends Packet
             MCColor color = null;
             String[] players = null;
 
-            if (mode == Mode.CREATE || mode == Mode.UPDATE)
+            if (action == TeamAction.CREATE || action == TeamAction.UPDATE)
             {
-                displayName = Utils.readString(is);
-                prefix = Utils.readString(is);
-                suffix = Utils.readString(is);
-                friendlyFire = FriendlyFireSetting.withId((byte) is.read());
-                nameTagVisibility = NameTagVisibility.valueOf(Utils.readString(is));
-                color = MCColor.withId((byte) is.read());
+                displayName = PacketParser.readObject(String.class, is);
+                prefix = PacketParser.readObject(String.class, is);
+                suffix = PacketParser.readObject(String.class, is);
+                friendlyFire = PacketParser.readObject(FriendlyFireSetting.class, is);
+                nameTagVisibility = PacketParser.readObject(NameTagVisibility.class, is);
+                color = PacketParser.readObject(MCColor.class, is);
             }
 
-            if (mode == Mode.CREATE || mode == Mode.ADD_PLAYERS || mode == Mode.REMOVE_PLAYERS)
+            if (action == TeamAction.CREATE || action == TeamAction.ADD_PLAYERS
+                    || action == TeamAction.REMOVE_PLAYERS)
             {
                 int numPlayers = Utils.readVarInt(is);
                 players = new String[numPlayers];
 
                 for (int i = 0; i < numPlayers; i++)
-                    players[i] = Utils.readString(is);
+                    players[i] = PacketParser.readObject(String.class, is);
             }
 
-            return new TeamUpdatePacket(teamName, mode, displayName, prefix, suffix, friendlyFire,
+            return new TeamUpdatePacket(teamName, action, displayName, prefix, suffix, friendlyFire,
                     nameTagVisibility, color, players);
         }
 
         @Override
         public void write(TeamUpdatePacket packet, OutputStream os) throws IOException
         {
-            Utils.writeString(packet.teamName, os);
-            os.write(packet.mode.id);
+            PacketParser.writeObject(String.class, packet.teamName, os);
+            PacketParser.writeObject(TeamAction.class, packet.action, os);
 
-            if (packet.mode == Mode.CREATE || packet.mode == Mode.UPDATE)
+            if (packet.action == TeamAction.CREATE || packet.action == TeamAction.UPDATE)
             {
-                Utils.writeString(packet.displayName, os);
-                Utils.writeString(packet.prefix, os);
-                Utils.writeString(packet.suffix, os);
-                os.write(packet.friendlyFire.id);
-                Utils.writeString(packet.nameTagVisibility.id, os);
-                os.write(packet.color.id);
+                PacketParser.writeObject(String.class, packet.displayName, os);
+                PacketParser.writeObject(String.class, packet.prefix, os);
+                PacketParser.writeObject(String.class, packet.suffix, os);
+                PacketParser.writeObject(FriendlyFireSetting.class, packet.friendlyFire, os);
+                PacketParser.writeObject(NameTagVisibility.class, packet.nameTagVisibility, os);
+                PacketParser.writeObject(MCColor.class, packet.color, os);
             }
 
-            if (packet.mode == Mode.CREATE || packet.mode == Mode.ADD_PLAYERS
-                    || packet.mode == Mode.REMOVE_PLAYERS)
+            if (packet.action == TeamAction.CREATE || packet.action == TeamAction.ADD_PLAYERS
+                    || packet.action == TeamAction.REMOVE_PLAYERS)
             {
                 Utils.writeVarInt(packet.players.length, os);
 
                 for (int i = 0; i < packet.players.length; i++)
-                    Utils.writeString(packet.players[i], os);
+                    PacketParser.writeObject(String.class, packet.players[i], os);
             }
         }
 

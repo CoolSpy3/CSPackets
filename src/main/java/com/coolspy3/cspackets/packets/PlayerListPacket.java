@@ -13,16 +13,17 @@ import com.coolspy3.csmodloader.network.packet.PacketSerializer;
 import com.coolspy3.csmodloader.network.packet.PacketSpec;
 import com.coolspy3.csmodloader.util.Utils;
 import com.coolspy3.cspackets.datatypes.Gamemode;
+import com.coolspy3.cspackets.datatypes.PlayerListAction;
 import com.coolspy3.cspackets.packets.PlayerListPacket.PlayerInfo.Property;
 
 @PacketSpec(types = {}, direction = PacketDirection.CLIENTBOUND)
 public class PlayerListPacket extends Packet
 {
 
-    public final Action action;
+    public final PlayerListAction action;
     public final PlayerInfo[] players;
 
-    public PlayerListPacket(Action action, PlayerInfo[] players)
+    public PlayerListPacket(PlayerListAction action, PlayerInfo[] players)
     {
         this.action = action;
         this.players = players;
@@ -32,34 +33,6 @@ public class PlayerListPacket extends Packet
     public Object[] getValues()
     {
         return null;
-    }
-
-    public static enum Action
-    {
-
-        ADD_PLAYER(0), UPDATE_GAMEMODE(1), UPDATE_LATENCY(2), UPDATE_DISPLAY_NAME(3), REMOVE_PLAYER(
-                4);
-
-        public final int id;
-
-        private Action(int id)
-        {
-            this.id = id;
-        }
-
-        public Integer getId()
-        {
-            return id;
-        }
-
-        public static Action withId(int id)
-        {
-            for (Action val : values())
-                if (val.id == id) return val;
-
-            return null;
-        }
-
     }
 
     public static class PlayerInfo
@@ -126,24 +99,23 @@ public class PlayerListPacket extends Packet
                 @Override
                 public Property decode(InputStream is) throws IOException
                 {
-                    String name = Utils.readString(is);
-                    String value = Utils.readString(is);
+                    String name = PacketParser.readObject(String.class, is);
+                    String value = PacketParser.readObject(String.class, is);
 
-                    if (is.read() != 0x01) return new Property(name, value);
-
-                    return new Property(name, value, Utils.readString(is));
+                    return new Property(name, value,
+                            PacketParser.readObject(Boolean.class, is) ? Utils.readString(is)
+                                    : null);
                 }
 
                 @Override
                 public void encode(Property obj, OutputStream os) throws IOException
                 {
-                    Utils.writeString(obj.name, os);
-                    Utils.writeString(obj.value, os);
+                    PacketParser.writeObject(String.class, obj.name, os);
+                    PacketParser.writeObject(String.class, obj.value, os);
+                    PacketParser.writeObject(Boolean.class, obj.signature != null, os);
 
-                    if (obj.signature == null) return;
-
-                    os.write(0x01);
-                    Utils.writeString(obj.signature, os);
+                    if (obj.signature != null)
+                        PacketParser.writeObject(String.class, obj.signature, os);
                 }
 
                 @Override
@@ -170,56 +142,53 @@ public class PlayerListPacket extends Packet
         @Override
         public PlayerListPacket read(InputStream is) throws IOException
         {
-            Action action = Action.withId(Utils.readVarInt(is));
+            PlayerListAction action = PacketParser.readObject(PlayerListAction.class, is);
+
             int numPlayers = Utils.readVarInt(is);
             PlayerInfo[] players = new PlayerInfo[numPlayers];
 
             for (int i = 0; i < numPlayers; i++)
             {
                 UUID uuid = PacketParser.readObject(UUID.class, is);
+
                 switch (action)
                 {
                     case ADD_PLAYER:
-                        String name = Utils.readString(is);
+                        String name = PacketParser.readObject(String.class, is);
+
                         int numProperties = Utils.readVarInt(is);
                         Property[] properties = new Property[numProperties];
 
                         for (int j = 0; j < numProperties; j++)
-                        {
-                            String propName = Utils.readString(is);
-                            String propValue = Utils.readString(is);
-                            String signature = null;
+                            properties[i] = PacketParser.readObject(Property.class, is);
 
-                            if (is.read() == 0x01) signature = Utils.readString(is);
+                        Gamemode gamemode = PacketParser.readObject(Gamemode.class, is);
+                        int ping = PacketParser.readWrappedObject(Packet.VarInt.class, is);
 
-                            properties[j] = new Property(propName, propValue, signature);
-                        }
-
-                        Gamemode gamemode = Gamemode.withId((byte) Utils.readVarInt(is));
-                        int ping = Utils.readVarInt(is);
-                        String displayName = null;
-
-                        if (is.read() == 0x01) displayName = Utils.readString(is);
-
-                        players[i] =
-                                new PlayerInfo(uuid, name, properties, gamemode, ping, displayName);
+                        players[i] = new PlayerInfo(uuid, name, properties, gamemode, ping,
+                                PacketParser.readObject(Boolean.class, is)
+                                        ? PacketParser.readObject(String.class, is)
+                                        : null);
 
                         break;
 
                     case UPDATE_GAMEMODE:
                         players[i] =
-                                new PlayerInfo(uuid, Gamemode.withId((byte) Utils.readVarInt(is)));
+                                new PlayerInfo(uuid, PacketParser.readObject(Gamemode.class, is));
 
                         break;
 
                     case UPDATE_LATENCY:
-                        players[i] = new PlayerInfo(uuid, Utils.readVarInt(is));
+                        players[i] = new PlayerInfo(uuid,
+                                PacketParser.readWrappedObject(Packet.VarInt.class, is));
 
                         break;
 
                     case UPDATE_DISPLAY_NAME:
                         players[i] = new PlayerInfo(uuid,
-                                is.read() == 0x01 ? Utils.readString(is) : null);
+                                PacketParser.readObject(Boolean.class, is)
+                                        ? PacketParser.readObject(String.class, is)
+                                        : null);
 
                         break;
 
@@ -239,8 +208,54 @@ public class PlayerListPacket extends Packet
         @Override
         public void write(PlayerListPacket packet, OutputStream os) throws IOException
         {
-            // TODO Auto-generated method stub
+            PacketParser.writeObject(PlayerListAction.class, packet.action, os);
+            Utils.writeVarInt(packet.players.length, os);
 
+            for (int i = 0; i < packet.players.length; i++)
+            {
+                PlayerInfo player = packet.players[i];
+
+                PacketParser.writeObject(UUID.class, player.uuid, os);
+
+                switch (packet.action)
+                {
+                    case ADD_PLAYER:
+                        PacketParser.writeObject(String.class, player.name, os);
+
+                        Utils.writeVarInt(player.properties.length, os);
+
+                        for (int j = 0; j < player.properties.length; j++)
+                            PacketParser.writeObject(PlayerInfo.Property.class,
+                                    player.properties[j], os);
+
+                        PacketParser.writeObject(Gamemode.class, player.gamemode, os);
+                        PacketParser.writeObject(Packet.VarInt.class, player.ping, os);
+
+                        break;
+
+                    case UPDATE_GAMEMODE:
+                        PacketParser.writeObject(Gamemode.class, player.gamemode, os);
+
+                        break;
+
+                    case UPDATE_LATENCY:
+                        PacketParser.writeObject(Packet.VarInt.class, player.ping, os);
+
+                        break;
+
+                    case UPDATE_DISPLAY_NAME:
+                        PacketParser.writeObject(Boolean.class, player.displayName == null, os);
+
+                        if (player.displayName != null)
+                            PacketParser.writeObject(String.class, player.displayName, os);
+
+                        break;
+
+                    case REMOVE_PLAYER:
+                    default:
+                        break;
+                }
+            }
         }
 
     }

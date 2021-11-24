@@ -6,19 +6,21 @@ import java.io.OutputStream;
 
 import com.coolspy3.csmodloader.network.PacketDirection;
 import com.coolspy3.csmodloader.network.packet.Packet;
+import com.coolspy3.csmodloader.network.packet.PacketParser;
 import com.coolspy3.csmodloader.network.packet.PacketSerializer;
 import com.coolspy3.csmodloader.network.packet.PacketSpec;
-import com.coolspy3.csmodloader.util.Utils;
+import com.coolspy3.cspackets.datatypes.CombatEvent;
 
 @PacketSpec(types = {}, direction = PacketDirection.CLIENTBOUND)
 public class CombatEventPacket extends Packet
 {
 
-    public final Event event;
+    public final CombatEvent event;
     public final int duration, playerId, entityId;
     public final String message;
 
-    public CombatEventPacket(Event event, int duration, int playerId, int entityId, String message)
+    public CombatEventPacket(CombatEvent event, int duration, int playerId, int entityId,
+            String message)
     {
         this.event = event;
         this.duration = duration;
@@ -33,31 +35,6 @@ public class CombatEventPacket extends Packet
         return null;
     }
 
-    public static enum Event
-    {
-        ENTER_COMBAT(0), END_COMBAT(1), ENTITY_DEAD(2);
-
-        public final int id;
-
-        private Event(int id)
-        {
-            this.id = id;
-        }
-
-        public Integer getId()
-        {
-            return id;
-        }
-
-        public static Event withId(int id)
-        {
-            for (Event val : values())
-                if (val.id == id) return val;
-
-            return null;
-        }
-    }
-
     public static class Serializer implements PacketSerializer<CombatEventPacket>
     {
 
@@ -70,7 +47,7 @@ public class CombatEventPacket extends Packet
         @Override
         public CombatEventPacket read(InputStream is) throws IOException
         {
-            Event event = Event.withId(Utils.readVarInt(is));
+            CombatEvent event = PacketParser.readObject(CombatEvent.class, is);
 
             switch (event)
             {
@@ -78,12 +55,15 @@ public class CombatEventPacket extends Packet
                     return new CombatEventPacket(event, 0, 0, 0, null);
 
                 case END_COMBAT:
-                    return new CombatEventPacket(event, Utils.readVarInt(is), 0,
-                            Utils.readVarInt(is), null);
+                    return new CombatEventPacket(event,
+                            PacketParser.readWrappedObject(Packet.VarInt.class, is), 0,
+                            PacketParser.readWrappedObject(Packet.VarInt.class, is), null);
 
                 case ENTITY_DEAD:
-                    return new CombatEventPacket(event, 0, Utils.readVarInt(is),
-                            Utils.readVarInt(is), Utils.readString(is));
+                    return new CombatEventPacket(event, 0,
+                            PacketParser.readWrappedObject(Packet.VarInt.class, is),
+                            PacketParser.readWrappedObject(Packet.VarInt.class, is),
+                            PacketParser.readObject(String.class, is));
 
                 default:
                     return null;
@@ -93,7 +73,7 @@ public class CombatEventPacket extends Packet
         @Override
         public void write(CombatEventPacket packet, OutputStream os) throws IOException
         {
-            Utils.writeVarInt(packet.event.id, os);
+            PacketParser.writeObject(CombatEvent.class, packet.event, os);
 
             switch (packet.event)
             {
@@ -101,15 +81,15 @@ public class CombatEventPacket extends Packet
                     break;
 
                 case END_COMBAT:
-                    Utils.writeVarInt(packet.duration, os);
-                    Utils.writeVarInt(packet.entityId, os);
+                    PacketParser.writeObject(Packet.VarInt.class, packet.duration, os);
+                    PacketParser.writeObject(Packet.VarInt.class, packet.entityId, os);
 
                     break;
 
                 case ENTITY_DEAD:
-                    Utils.writeVarInt(packet.playerId, os);
-                    Utils.writeVarInt(packet.entityId, os);
-                    Utils.writeString(packet.message, os);
+                    PacketParser.writeObject(Packet.VarInt.class, packet.playerId, os);
+                    PacketParser.writeObject(Packet.VarInt.class, packet.entityId, os);
+                    PacketParser.writeObject(String.class, packet.message, os);
 
                     break;
 

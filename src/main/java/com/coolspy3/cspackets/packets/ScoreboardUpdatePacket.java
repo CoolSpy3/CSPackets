@@ -6,9 +6,9 @@ import java.io.OutputStream;
 
 import com.coolspy3.csmodloader.network.PacketDirection;
 import com.coolspy3.csmodloader.network.packet.Packet;
+import com.coolspy3.csmodloader.network.packet.PacketParser;
 import com.coolspy3.csmodloader.network.packet.PacketSerializer;
 import com.coolspy3.csmodloader.network.packet.PacketSpec;
-import com.coolspy3.csmodloader.util.Utils;
 
 @PacketSpec(types = {}, direction = PacketDirection.CLIENTBOUND)
 public class ScoreboardUpdatePacket extends Packet
@@ -45,22 +45,22 @@ public class ScoreboardUpdatePacket extends Packet
         @Override
         public ScoreboardUpdatePacket read(InputStream is) throws IOException
         {
-            String scoreName = Utils.readString(is);
-            boolean remove = is.read() == 0x01;
-            String objectiveName = Utils.readString(is);
+            String scoreName = PacketParser.readObject(String.class, is);
+            boolean remove = PacketParser.readObject(Boolean.class, is);
+            String objectiveName = PacketParser.readObject(String.class, is);
 
             return new ScoreboardUpdatePacket(scoreName, remove, objectiveName,
-                    remove ? 0 : Utils.readVarInt(is));
+                    remove ? 0 : PacketParser.readWrappedObject(Packet.VarInt.class, is));
         }
 
         @Override
         public void write(ScoreboardUpdatePacket packet, OutputStream os) throws IOException
         {
-            Utils.writeString(packet.scoreName, os);
-            os.write(packet.remove ? 0x01 : 0x00);
-            Utils.writeString(packet.objectiveName, os);
+            PacketParser.writeObject(String.class, packet.scoreName, os);
+            PacketParser.writeObject(Boolean.class, packet.remove, os);
+            PacketParser.writeObject(String.class, packet.objectiveName, os);
 
-            if (!packet.remove) Utils.writeVarInt(packet.value, os);
+            if (!packet.remove) PacketParser.writeObject(Packet.VarInt.class, packet.value, os);
         }
 
     }

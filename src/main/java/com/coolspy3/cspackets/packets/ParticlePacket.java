@@ -9,7 +9,6 @@ import com.coolspy3.csmodloader.network.packet.Packet;
 import com.coolspy3.csmodloader.network.packet.PacketParser;
 import com.coolspy3.csmodloader.network.packet.PacketSerializer;
 import com.coolspy3.csmodloader.network.packet.PacketSpec;
-import com.coolspy3.csmodloader.util.Utils;
 
 @PacketSpec(types = {}, direction = PacketDirection.CLIENTBOUND)
 public class ParticlePacket extends Packet
@@ -69,7 +68,7 @@ public class ParticlePacket extends Packet
                     new int[particleId == 36 ? 2 : particleId == 37 || particleId == 38 ? 1 : 0];
 
             for (int i = 0; i < data.length; i++)
-                data[i] = Utils.readVarInt(is);
+                data[i] = PacketParser.readWrappedObject(Packet.VarInt.class, is);
 
             return new ParticlePacket(particleId, longDistance, x, y, z, offsetX, offsetY, offsetZ,
                     particleData, count, data);
@@ -92,13 +91,17 @@ public class ParticlePacket extends Packet
             switch (packet.particleId)
             {
                 case 36:
-                    Utils.writeVarInt(packet.data[0], os);
-                    Utils.writeVarInt(packet.data[1], os);
+                    PacketParser.writeObject(Packet.VarInt.class, packet.data[0], os);
+                    PacketParser.writeObject(Packet.VarInt.class, packet.data[1], os);
+
                     break;
+
                 case 37:
                 case 38:
-                    Utils.writeVarInt(packet.data[0], os);
+                    PacketParser.writeObject(Packet.VarInt.class, packet.data[0], os);
+
                     break;
+
                 default:
                     break;
             }
