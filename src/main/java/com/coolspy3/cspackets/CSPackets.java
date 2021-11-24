@@ -1,10 +1,15 @@
 package com.coolspy3.cspackets;
 
+import java.util.Locale;
+
 import com.coolspy3.csmodloader.mod.Entrypoint;
 import com.coolspy3.csmodloader.mod.Mod;
 import com.coolspy3.csmodloader.network.packet.ObjectParser;
+import com.coolspy3.csmodloader.network.packet.Packet;
 import com.coolspy3.csmodloader.network.packet.PacketParser;
 import com.coolspy3.csmodloader.util.Utils;
+import com.coolspy3.cspackets.datatypes.ChatMode;
+import com.coolspy3.cspackets.datatypes.ClientAction;
 import com.coolspy3.cspackets.datatypes.Difficulty;
 import com.coolspy3.cspackets.datatypes.Dimension;
 import com.coolspy3.cspackets.datatypes.EntityMetadata;
@@ -15,13 +20,16 @@ import com.coolspy3.cspackets.datatypes.Face;
 import com.coolspy3.cspackets.datatypes.Gamemode;
 import com.coolspy3.cspackets.datatypes.PaintingDirection;
 import com.coolspy3.cspackets.datatypes.PlayerAbilities;
+import com.coolspy3.cspackets.datatypes.PlayerAction;
 import com.coolspy3.cspackets.datatypes.PlayerAnimation;
 import com.coolspy3.cspackets.datatypes.PlayerDiggingType;
 import com.coolspy3.cspackets.datatypes.PlayerPositionAndLookFlags;
 import com.coolspy3.cspackets.datatypes.Position;
 import com.coolspy3.cspackets.datatypes.ScoreboardPosition;
+import com.coolspy3.cspackets.datatypes.SkinParts;
 import com.coolspy3.cspackets.datatypes.Slot;
 import com.coolspy3.cspackets.datatypes.Statistic;
+import com.coolspy3.cspackets.datatypes.VehicleSteerFlags;
 import com.coolspy3.cspackets.packets.BlockChangePacket;
 import com.coolspy3.cspackets.packets.CombatEventPacket;
 import com.coolspy3.cspackets.packets.EntityDestroyPacket;
@@ -36,9 +44,11 @@ import com.coolspy3.cspackets.packets.PlayerListPacket;
 import com.coolspy3.cspackets.packets.ScoreboardObjectivePacket;
 import com.coolspy3.cspackets.packets.ScoreboardUpdatePacket;
 import com.coolspy3.cspackets.packets.StatisticsPacket;
+import com.coolspy3.cspackets.packets.TabCompletePacket;
 import com.coolspy3.cspackets.packets.TabCompleteResponsePacket;
 import com.coolspy3.cspackets.packets.TeamUpdatePacket;
 import com.coolspy3.cspackets.packets.TitlePacket;
+import com.coolspy3.cspackets.packets.WindowActionPacket;
 import com.coolspy3.cspackets.packets.WindowItemsPacket;
 import com.coolspy3.cspackets.packets.WindowOpenPacket;
 import com.coolspy3.cspackets.packets.WorldBorderUpdatePacket;
@@ -59,6 +69,12 @@ public class CSPackets implements Entrypoint
 	public CSPackets()
 	{
 		// Parsers
+		PacketParser.addParser(PacketParser.mappingParser(Byte.class, ChatMode::getId,
+				ChatMode::withId, ChatMode.class));
+
+		PacketParser.addParser(PacketParser.mappingWrappingParser(Packet.VarInt.class,
+				ClientAction::getId, ClientAction::withId, ClientAction.class));
+
 		PacketParser.addParser(PacketParser.mappingParser(Byte.class, Difficulty::getId,
 				Difficulty::withId, Difficulty.class));
 
@@ -83,6 +99,9 @@ public class CSPackets implements Entrypoint
 		PacketParser.addParser(PacketParser.mappingParser(Byte.class, Gamemode::getId,
 				Gamemode::withId, Gamemode.class));
 
+		PacketParser.addParser(PacketParser.mappingParser(String.class, Locale::toString,
+				locale -> new Locale(locale.split("_")[0], locale.split("_")[1]), Locale.class));
+
 		PacketParser.addParser(new MultiblockChangePacket.Record.Parser());
 
 		PacketParser.addParser(
@@ -92,8 +111,16 @@ public class CSPackets implements Entrypoint
 		PacketParser.addParser(PacketParser.mappingParser(Byte.class, PaintingDirection::getId,
 				PaintingDirection::withId, PaintingDirection.class));
 
-		PacketParser.addParser(PacketParser.mappingParser(Byte.class, PlayerAbilities.WRITER,
-				PlayerAbilities.READER, PlayerAbilities.class));
+		PacketParser.addParser(PacketParser.wrappingMappingParser(Byte.class,
+				PlayerAbilities.CLIENTBOUND_WRITER, PlayerAbilities.CLIENTBOUND_READER,
+				PlayerAbilities.class, PlayerAbilities.Clientbound.class));
+
+		PacketParser.addParser(PacketParser.wrappingMappingParser(Byte.class,
+				PlayerAbilities.SERVERBOUND_WRITER, PlayerAbilities.SERVERBOUND_READER,
+				PlayerAbilities.class, PlayerAbilities.Serverbound.class));
+
+		PacketParser.addParser(PacketParser.mappingWrappingParser(Packet.VarInt.class,
+				PlayerAction::getId, PlayerAction::withId, PlayerAction.class));
 
 		PacketParser.addParser(PacketParser.mappingParser(Byte.class, PlayerAnimation::getId,
 				PlayerAnimation::withId, PlayerAnimation.class));
@@ -122,11 +149,19 @@ public class CSPackets implements Entrypoint
 		PacketParser.addParser(PacketParser.mappingParser(Byte.class, ScoreboardPosition::getId,
 				ScoreboardPosition::withId, ScoreboardPosition.class));
 
+		PacketParser.addParser(PacketParser.mappingParser(Byte.class, SkinParts.WRITER,
+				SkinParts.READER, SkinParts.class));
+
 		PacketParser.addParser(new Slot.Parser());
 
 		PacketParser.addParser(new Statistic.Parser());
 
+		PacketParser.addParser(PacketParser.mappingParser(Byte.class, VehicleSteerFlags.WRITER,
+				VehicleSteerFlags.READER, VehicleSteerFlags.class));
+
+
 		GeneratedPackets.registerPackets();
+
 
 		// Clientbound Packets
 		PacketParser.registerPacket(ObjectSpawnPacket.class, new ObjectSpawnPacket.Serializer(),
@@ -179,8 +214,15 @@ public class CSPackets implements Entrypoint
 
 		PacketParser.registerPacket(TitlePacket.class, new TitlePacket.Serializer(), 0x45);
 
+
 		// Serverbound Packets
 		PacketParser.registerPacket(EntityUsePacket.class, new EntityUsePacket.Serializer(), 0x02);
+
+		PacketParser.registerPacket(WindowActionPacket.class, new WindowActionPacket.Serializer(),
+				0x0E);
+
+		PacketParser.registerPacket(TabCompletePacket.class, new TabCompletePacket.Serializer(),
+				0x14);
 	}
 
 }

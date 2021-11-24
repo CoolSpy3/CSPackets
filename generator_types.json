@@ -54,20 +54,20 @@
         "type": "UUID",
         "class": "UUID"
     },
-    "positionAndLookFlags": {
-        "import": "com.coolspy3.cspackets.datatypes.PlayerPositionAndLookFlags",
-        "type": "PlayerPositionAndLookFlags",
-        "class": "PlayerPositionAndLookFlags"
+    "blockUpdateAction": {
+        "import": "com.coolspy3.cspackets.datatypes.BlockUpdateAction",
+        "type": "BlockUpdateAction",
+        "class": "BlockUpdateAction"
     },
-    "position": {
-        "import": "com.coolspy3.cspackets.datatypes.Position",
-        "type": "Position",
-        "class": "Position"
+    "chatMode": {
+        "import": "com.coolspy3.cspackets.datatypes.ChatMode",
+        "type": "ChatMode",
+        "class": "ChatMode"
     },
-    "slot": {
-        "import": "com.coolspy3.cspackets.datatypes.Slot",
-        "type": "Slot",
-        "class": "Slot"
+    "clientAction": {
+        "import": "com.coolspy3.cspackets.datatypes.ClientStatus",
+        "type": "ClientStatus",
+        "class": "ClientStatus"
     },
     "difficulty": {
         "import": "com.coolspy3.cspackets.datatypes.Difficulty",
@@ -79,69 +79,104 @@
         "type": "Dimension",
         "class": "Dimension"
     },
-    "gamemode": {
-        "import": "com.coolspy3.cspackets.datatypes.Gamemode",
-        "type": "Gamemode",
-        "class": "Gamemode"
-    },
-    "playerAnimation": {
-        "import": "com.coolspy3.cspackets.datatypes.PlayerAnimation",
-        "type": "PlayerAnimation",
-        "class": "PlayerAnimation"
-    },
     "entityMetadata": {
         "import": "com.coolspy3.cspackets.datatypes.EntityMetadata",
         "type": "EntityMetadata",
         "class": "EntityMetadata"
-    },
-    "paintingDirection": {
-        "import": "com.coolspy3.cspackets.datatypes.PaintingDirection",
-        "type": "PaintingDirection",
-        "class": "PaintingDirection"
-    },
-    "entityStatus": {
-        "import": "com.coolspy3.cspackets.datatypes.EntityStatus",
-        "type": "EntityStatus",
-        "class": "EntityStatus"
     },
     "entityProperties": {
         "import": "com.coolspy3.cspackets.datatypes.EntityProperties",
         "type": "EntityProperties",
         "class": "EntityProperties"
     },
+    "entityStatus": {
+        "import": "com.coolspy3.cspackets.datatypes.EntityStatus",
+        "type": "EntityStatus",
+        "class": "EntityStatus"
+    },
+    "face": {
+        "import": "com.coolspy3.cspackets.datatypes.Face",
+        "type": "Face",
+        "class": "face"
+    },
+    "gamemode": {
+        "import": "com.coolspy3.cspackets.datatypes.Gamemode",
+        "type": "Gamemode",
+        "class": "Gamemode"
+    },
     "gameState": {
         "import": "com.coolspy3.cspackets.datatypes.GameState",
         "type": "GameState",
         "class": "GameState"
     },
-    "nbt": {
-        "import": "net.querz.nbt.io.NamedTag",
-        "type": "NamedTag",
-        "class": "NamedTag"
+    "locale": {
+        "import": "java.util.Locale",
+        "type": "Locale",
+        "class": "Locale"
     },
-    "blockUpdateAction": {
-        "import": "com.coolspy3.cspackets.datatypes.BlockUpdateAction",
-        "type": "BlockUpdateAction",
-        "class": "BlockUpdateAction"
+    "paintingDirection": {
+        "import": "com.coolspy3.cspackets.datatypes.PaintingDirection",
+        "type": "PaintingDirection",
+        "class": "PaintingDirection"
     },
-    "playerAbilities": {
+    "clientboundPlayerAbilities": {
         "import": "com.coolspy3.cspackets.datatypes.PlayerAbilities",
         "type": "PlayerAbilities",
-        "class": "PlayerAbilities"
+        "class": "PlayerAbilities.Clientbound"
     },
-    "scoreboardPosition": {
-        "import": "com.coolspy3.cspackets.datatypes.ScoreboardPosition",
-        "type": "ScoreboardPosition",
-        "class": "ScoreboardPosition"
+    "serverboundPlayerAbilities": {
+        "import": "com.coolspy3.cspackets.datatypes.PlayerAbilities",
+        "type": "PlayerAbilities",
+        "class": "PlayerAbilities.Serverbound"
+    },
+    "playerAction": {
+        "import": "com.coolspy3.cspackets.datatypes.PlayerAction",
+        "type": "PlayerAction",
+        "class": "PlayerAction"
+    },
+    "playerAnimation": {
+        "import": "com.coolspy3.cspackets.datatypes.PlayerAnimation",
+        "type": "PlayerAnimation",
+        "class": "PlayerAnimation"
     },
     "playerDiggingType": {
         "import": "com.coolspy3.cspackets.datatypes.PlayerDiggingType",
         "type": "PlayerDiggingType",
         "class": "PlayerDiggingType"
     },
-    "face": {
-        "import": "com.coolspy3.cspackets.datatypes.Face",
-        "type": "Face",
-        "class": "face"
+    "position": {
+        "import": "com.coolspy3.cspackets.datatypes.Position",
+        "type": "Position",
+        "class": "Position"
+    },
+    "positionAndLookFlags": {
+        "import": "com.coolspy3.cspackets.datatypes.PlayerPositionAndLookFlags",
+        "type": "PlayerPositionAndLookFlags",
+        "class": "PlayerPositionAndLookFlags"
+    },
+    "nbt": {
+        "import": "net.querz.nbt.io.NamedTag",
+        "type": "NamedTag",
+        "class": "NamedTag"
+    },
+    "scoreboardPosition": {
+        "import": "com.coolspy3.cspackets.datatypes.ScoreboardPosition",
+        "type": "ScoreboardPosition",
+        "class": "ScoreboardPosition"
+    },
+    "skinParts": {
+        "import": "com.coolspy3.cspackets.datatypes.SkinParts",
+        "type": "SkinParts",
+        "class": "SkinParts"
+    },
+    "slot": {
+        "import": "com.coolspy3.cspackets.datatypes.Slot",
+        "type": "Slot",
+        "class": "Slot"
+    },
+    "steerFlags": {
+        "import": "com.coolspy3.cspackets.datatypes.VehicleSteerFlags",
+        "type": "VehicleSteerFlags",
+        "class": "VehicleSteerFlags"
     }
 }

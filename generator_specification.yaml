@@ -559,7 +559,7 @@ components:
                 z:
                     const: int
 
-        WindowClosePacket:
+        ClientboundWindowClosePacket:
             type: object
             properties:
                 id:
@@ -593,7 +593,7 @@ components:
                 value:
                     const: short
 
-        TransactionConfirmPacket:
+        ClientboundTransactionConfirmPacket:
             type: object
             properties:
                 id:
@@ -607,7 +607,7 @@ components:
                 accepted:
                     const: boolean
 
-        UpdateSign:
+        ClientboundSignUpdatePacket:
             type: object
             properties:
                 id:
@@ -647,7 +647,7 @@ components:
                 position:
                     const: position
 
-        PlayerAbilitiesPacket:
+        ClientboundPlayerAbilitiesPacket:
             type: object
             properties:
                 id:
@@ -655,7 +655,7 @@ components:
                 direction:
                     const: clientbound
                 flags:
-                    const: playerAbilities
+                    const: clientboundPlayerAbilities
                 flyingSpeed:
                     const: float
                 fovModif:
@@ -868,3 +868,159 @@ components:
                     const: "0x0A"
                 direction:
                     const: serverbound
+
+        PlayerActionPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x0B"
+                direction:
+                    const: serverbound
+                playerId:
+                    const: varint
+                action:
+                    const: playerAction
+                param:
+                    const: varint
+
+        VehicleSteerPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x0C"
+                direction:
+                    const: serverbound
+                strafe:
+                    const: float
+                forward:
+                    const: float
+                flags:
+                    const: steerFlags
+
+        ServerboundWindowClosePacket:
+            type: object
+            properties:
+                id:
+                    const: "0x0D"
+                direction:
+                    const: serverbound
+                windowId:
+                    const: byte
+
+        ServerboundTransactionConfirmPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x32"
+                direction:
+                    const: serverbound
+                windowId:
+                    const: byte
+                actionNumber:
+                    const: short
+                accepted:
+                    const: boolean
+
+        CreativeInventoryActionPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x10"
+                direction:
+                    const: serverbound
+                slot:
+                    const: short
+                clickedItem:
+                    const: Slot
+
+        EnchantItemPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x11"
+                direction:
+                    const: serverbound
+                windowId:
+                    const: byte
+                enchantment:
+                    const: byte
+
+        ServerboundSignUpdatePacket:
+            type: object
+            properties:
+                id:
+                    const: "0x12"
+                direction:
+                    const: serverbound
+                line1:
+                    const: string
+                line2:
+                    const: string
+                line3:
+                    const: string
+                line4:
+                    const: string
+
+        ServerboundPlayerAbilitiesPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x13"
+                direction:
+                    const: serverbound
+                flags:
+                    const: serverboundPlayerAbilities
+                flyingSpeed:
+                    const: float
+                fovModif:
+                    const: float
+
+        ClientSettingsPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x15"
+                direction:
+                    const: serverbound
+                locale:
+                    const: locale
+                viewDistance:
+                    const: byte
+                chatMode:
+                    const: chatMode
+                chatColorsEnabled:
+                    const: boolean
+                displayedSkinParts:
+                    const: skinParts
+
+        ClientStatusPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x16"
+                direction:
+                    const: serverbound
+                action:
+                    const: clientStatus
+
+        SpectatePacket:
+            type: object
+            properties:
+                id:
+                    const: "0x18"
+                direction:
+                    const: serverbound
+                target:
+                    const: uuid
+
+        ResourcePackStatusPacket:
+            const: object
+            properties:
+                id:
+                    const: "0x19"
+                direction:
+                    const: serverbound
+                hash:
+                    const: string
+                result:
+                    const: resourcePackStatus
