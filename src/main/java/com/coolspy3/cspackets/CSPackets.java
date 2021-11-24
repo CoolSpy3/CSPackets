@@ -8,6 +8,7 @@ import com.coolspy3.csmodloader.network.packet.ObjectParser;
 import com.coolspy3.csmodloader.network.packet.Packet;
 import com.coolspy3.csmodloader.network.packet.PacketParser;
 import com.coolspy3.csmodloader.util.Utils;
+import com.coolspy3.cspackets.datatypes.Block;
 import com.coolspy3.cspackets.datatypes.BlockUpdateAction;
 import com.coolspy3.cspackets.datatypes.ChatMode;
 import com.coolspy3.cspackets.datatypes.ClientAction;
@@ -82,6 +83,23 @@ public class CSPackets implements Entrypoint
 	public CSPackets()
 	{
 		// Parsers
+		PacketParser
+				.addParser(ObjectParser.wrapping(ObjectParser.mapping(
+						PacketParser.mappingParser(Integer.class, Short::intValue,
+								Integer::shortValue, Short.class),
+						Block::toShort, Block::fromShort, Block.class), Block.AsInt.class));
+
+		PacketParser.addParser(PacketParser.wrappingMappingParser(Short.class, Block::toShort,
+				Block::fromShort, Block.class, Block.AsShort.class));
+
+		PacketParser
+				.addParser(ObjectParser.wrapping(
+						ObjectParser.mapping(
+								PacketParser.mappingWrappingParser(Packet.VarInt.class,
+										Short::intValue, Integer::shortValue, Short.class),
+								Block::toShort, Block::fromShort, Block.class),
+						Block.AsVarInt.class));
+
 		PacketParser.addParser(PacketParser.mappingParser(Byte.class, BlockUpdateAction::getId,
 				BlockUpdateAction::withId, BlockUpdateAction.class));
 

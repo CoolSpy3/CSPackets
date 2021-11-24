@@ -61,7 +61,7 @@ public class ObjectSpawnPacket extends Packet
         @Override
         public ObjectSpawnPacket read(InputStream is) throws IOException
         {
-            int entityId = PacketParser.readWrappedObject(Packet.VarInt.class, is);
+            int entityId = PacketParser.readWrappedObject(VarInt.class, is);
             byte type = PacketParser.readObject(Byte.class, is);
             int x = PacketParser.readObject(Integer.class, is);
             int y = PacketParser.readObject(Integer.class, is);
@@ -83,7 +83,7 @@ public class ObjectSpawnPacket extends Packet
         @Override
         public void write(ObjectSpawnPacket packet, OutputStream os) throws IOException
         {
-            PacketParser.writeObject(Packet.VarInt.class, packet.entityId, os);
+            PacketParser.writeObject(VarInt.class, packet.entityId, os);
             PacketParser.writeObject(Byte.class, packet.type, os);
             PacketParser.writeObject(Integer.class, packet.x, os);
             PacketParser.writeObject(Integer.class, packet.y, os);

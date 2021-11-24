@@ -44,7 +44,7 @@ public class BlockChangePacket extends Packet
         public BlockChangePacket read(InputStream is) throws IOException
         {
             Position position = PacketParser.readObject(Position.class, is);
-            int id = PacketParser.readWrappedObject(Packet.VarInt.class, is);
+            int id = PacketParser.readWrappedObject(VarInt.class, is);
 
             return new BlockChangePacket(position, id >> 4, id & 15);
         }
@@ -53,8 +53,8 @@ public class BlockChangePacket extends Packet
         public void write(BlockChangePacket packet, OutputStream os) throws IOException
         {
             PacketParser.writeObject(Position.class, packet.position, os);
-            PacketParser.writeObject(Packet.VarInt.class,
-                    (packet.blockId << 4) | (packet.blockMeta & 15), os);
+            PacketParser.writeObject(VarInt.class, (packet.blockId << 4) | (packet.blockMeta & 15),
+                    os);
         }
 
     }

@@ -45,7 +45,7 @@ public class EntityDestroyPacket extends Packet
             int[] entityIds = new int[count];
 
             for (int i = 0; i < count; i++)
-                entityIds[i] = PacketParser.readWrappedObject(Packet.VarInt.class, is);
+                entityIds[i] = PacketParser.readWrappedObject(VarInt.class, is);
 
             return new EntityDestroyPacket(entityIds);
         }
@@ -56,7 +56,7 @@ public class EntityDestroyPacket extends Packet
             Utils.writeVarInt(packet.entityIds.length, os);
 
             for (int i = 0; i < packet.entityIds.length; i++)
-                PacketParser.writeObject(Packet.VarInt.class, packet.entityIds[i], os);
+                PacketParser.writeObject(VarInt.class, packet.entityIds[i], os);
         }
 
     }

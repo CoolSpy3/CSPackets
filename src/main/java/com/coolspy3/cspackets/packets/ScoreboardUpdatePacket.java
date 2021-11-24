@@ -50,7 +50,7 @@ public class ScoreboardUpdatePacket extends Packet
             String objectiveName = PacketParser.readObject(String.class, is);
 
             return new ScoreboardUpdatePacket(scoreName, remove, objectiveName,
-                    remove ? 0 : PacketParser.readWrappedObject(Packet.VarInt.class, is));
+                    remove ? 0 : PacketParser.readWrappedObject(VarInt.class, is));
         }
 
         @Override
@@ -60,7 +60,7 @@ public class ScoreboardUpdatePacket extends Packet
             PacketParser.writeObject(Boolean.class, packet.remove, os);
             PacketParser.writeObject(String.class, packet.objectiveName, os);
 
-            if (!packet.remove) PacketParser.writeObject(Packet.VarInt.class, packet.value, os);
+            if (!packet.remove) PacketParser.writeObject(VarInt.class, packet.value, os);
         }
 
     }

@@ -87,12 +87,12 @@ public class WorldBorderUpdatePacket extends Packet
             {
                 case SET_SIZE:
                     return new WorldBorderUpdatePacket(
-                            PacketParser.readWrappedObject(Packet.VarInt.class, is));
+                            PacketParser.readWrappedObject(VarInt.class, is));
 
                 case LERP_SIZE:
                     return new WorldBorderUpdatePacket(PacketParser.readObject(Double.class, is),
                             PacketParser.readObject(Double.class, is),
-                            PacketParser.readWrappedObject(Packet.VarLong.class, is));
+                            PacketParser.readWrappedObject(VarLong.class, is));
 
                 case SET_CENTER:
                     return new WorldBorderUpdatePacket(PacketParser.readObject(Double.class, is),
@@ -103,18 +103,18 @@ public class WorldBorderUpdatePacket extends Packet
                             PacketParser.readObject(Double.class, is),
                             PacketParser.readObject(Double.class, is),
                             PacketParser.readObject(Double.class, is),
-                            PacketParser.readWrappedObject(Packet.VarLong.class, is),
-                            PacketParser.readWrappedObject(Packet.VarInt.class, is),
-                            PacketParser.readWrappedObject(Packet.VarInt.class, is),
-                            PacketParser.readWrappedObject(Packet.VarInt.class, is));
+                            PacketParser.readWrappedObject(VarLong.class, is),
+                            PacketParser.readWrappedObject(VarInt.class, is),
+                            PacketParser.readWrappedObject(VarInt.class, is),
+                            PacketParser.readWrappedObject(VarInt.class, is));
 
                 case SET_WARNING_TIME:
                     return new WorldBorderUpdatePacket(action,
-                            PacketParser.readWrappedObject(Packet.VarInt.class, is), 0);
+                            PacketParser.readWrappedObject(VarInt.class, is), 0);
 
                 case SET_WARNING_BLOCKS:
                     return new WorldBorderUpdatePacket(action, 0,
-                            PacketParser.readWrappedObject(Packet.VarInt.class, is));
+                            PacketParser.readWrappedObject(VarInt.class, is));
 
                 default:
                     return null;
@@ -136,7 +136,7 @@ public class WorldBorderUpdatePacket extends Packet
                 case LERP_SIZE:
                     PacketParser.writeObject(Double.class, packet.oldRadius, os);
                     PacketParser.writeObject(Double.class, packet.newRadius, os);
-                    PacketParser.writeObject(Packet.VarLong.class, packet.speed, os);
+                    PacketParser.writeObject(VarLong.class, packet.speed, os);
 
                     break;
 
@@ -151,20 +151,19 @@ public class WorldBorderUpdatePacket extends Packet
                     PacketParser.writeObject(Double.class, packet.z, os);
                     PacketParser.writeObject(Double.class, packet.oldRadius, os);
                     PacketParser.writeObject(Double.class, packet.newRadius, os);
-                    PacketParser.writeObject(Packet.VarLong.class, packet.speed, os);
-                    PacketParser.writeObject(Packet.VarInt.class, packet.portalTeleportBoundary,
-                            os);
-                    PacketParser.writeObject(Packet.VarInt.class, packet.warningTime, os);
-                    PacketParser.writeObject(Packet.VarInt.class, packet.warningBlocks, os);
+                    PacketParser.writeObject(VarLong.class, packet.speed, os);
+                    PacketParser.writeObject(VarInt.class, packet.portalTeleportBoundary, os);
+                    PacketParser.writeObject(VarInt.class, packet.warningTime, os);
+                    PacketParser.writeObject(VarInt.class, packet.warningBlocks, os);
 
                     break;
 
                 case SET_WARNING_TIME:
-                    PacketParser.writeObject(Packet.VarInt.class, packet.warningTime, os);
+                    PacketParser.writeObject(VarInt.class, packet.warningTime, os);
                     break;
 
                 case SET_WARNING_BLOCKS:
-                    PacketParser.writeObject(Packet.VarInt.class, packet.warningBlocks, os);
+                    PacketParser.writeObject(VarInt.class, packet.warningBlocks, os);
                     break;
 
                 default:

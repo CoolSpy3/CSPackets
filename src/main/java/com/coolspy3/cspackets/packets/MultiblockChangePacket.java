@@ -11,6 +11,7 @@ import com.coolspy3.csmodloader.network.packet.PacketParser;
 import com.coolspy3.csmodloader.network.packet.PacketSerializer;
 import com.coolspy3.csmodloader.network.packet.PacketSpec;
 import com.coolspy3.csmodloader.util.Utils;
+import com.coolspy3.cspackets.datatypes.Block;
 
 @PacketSpec(types = {}, direction = PacketDirection.CLIENTBOUND)
 public class MultiblockChangePacket extends Packet
@@ -36,15 +37,14 @@ public class MultiblockChangePacket extends Packet
     {
 
         public final byte relativeX, relativeZ, y;
-        public final int blockId, blockMeta;
+        public final Block block;
 
-        public Record(byte relativeX, byte relativeZ, byte y, int blockId, int blockMeta)
+        public Record(byte relativeX, byte relativeZ, byte y, Block block)
         {
             this.relativeX = relativeX;
             this.relativeZ = relativeZ;
             this.y = y;
-            this.blockId = blockId;
-            this.blockMeta = blockMeta;
+            this.block = block;
         }
 
         public static class Parser implements ObjectParser<Record>
@@ -55,9 +55,9 @@ public class MultiblockChangePacket extends Packet
             {
                 int pos = is.read();
                 byte y = (byte) is.read();
-                int id = Utils.readVarInt(is);
+                Block block = PacketParser.readWrappedObject(Block.AsVarInt.class, is);
 
-                return new Record((byte) (pos >> 4), (byte) (pos & 15), y, id >> 4, id & 15);
+                return new Record((byte) (pos >> 4), (byte) (pos & 15), y, block);
             }
 
             @Override
@@ -65,7 +65,7 @@ public class MultiblockChangePacket extends Packet
             {
                 os.write((obj.relativeX << 4) | obj.relativeZ);
                 os.write(obj.y);
-                Utils.writeVarInt((obj.blockId << 4) | (obj.blockMeta & 15), os);
+                PacketParser.writeObject(Block.AsVarInt.class, obj, os);
             }
 
             @Override

@@ -57,9 +57,9 @@ public class MapUpdatePacket extends Packet
         @Override
         public MapUpdatePacket read(InputStream is) throws IOException
         {
-            int mapId = PacketParser.readWrappedObject(Packet.VarInt.class, is);
+            int mapId = PacketParser.readWrappedObject(VarInt.class, is);
             byte scale = PacketParser.readObject(Byte.class, is);
-            int count = PacketParser.readWrappedObject(Packet.VarInt.class, is);
+            int count = PacketParser.readWrappedObject(VarInt.class, is);
             byte[][] icons = new byte[count][3];
 
             for (int i = 0; i < count; i++)
@@ -76,7 +76,7 @@ public class MapUpdatePacket extends Packet
             byte updatedRows = PacketParser.readObject(Byte.class, is);
             byte offsetX = PacketParser.readObject(Byte.class, is);
             byte offsetZ = PacketParser.readObject(Byte.class, is);
-            count = PacketParser.readWrappedObject(Packet.VarInt.class, is);
+            count = PacketParser.readWrappedObject(VarInt.class, is);
             byte[] data = Utils.readNBytes(is, count);
 
             return new MapUpdatePacket(mapId, scale, icons, updatedColumns, updatedRows, offsetX,
@@ -86,9 +86,9 @@ public class MapUpdatePacket extends Packet
         @Override
         public void write(MapUpdatePacket packet, OutputStream os) throws IOException
         {
-            PacketParser.writeObject(Packet.VarInt.class, packet.mapId, os);
+            PacketParser.writeObject(VarInt.class, packet.mapId, os);
             PacketParser.writeObject(Byte.class, packet.scale, os);
-            PacketParser.writeObject(Packet.VarInt.class, packet.icons.length, os);
+            PacketParser.writeObject(VarInt.class, packet.icons.length, os);
 
             for (int i = 0; i < packet.icons.length; i++)
             {
@@ -104,7 +104,7 @@ public class MapUpdatePacket extends Packet
             PacketParser.writeObject(Byte.class, packet.updatedRows, os);
             PacketParser.writeObject(Byte.class, packet.offsetX, os);
             PacketParser.writeObject(Byte.class, packet.offsetZ, os);
-            PacketParser.writeObject(Packet.VarInt.class, packet.data.length, os);
+            PacketParser.writeObject(VarInt.class, packet.data.length, os);
 
             os.write(packet.data);
         }

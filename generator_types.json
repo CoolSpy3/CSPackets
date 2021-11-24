@@ -54,6 +54,21 @@
         "class": "UUID",
         "type": "UUID"
     },
+    "blockAsInt": {
+        "import": "com.coolspy3.cspackets.datatypes.Block",
+        "class": "Block.AsInt",
+        "type": "Block"
+    },
+    "blockAsShort": {
+        "import": "com.coolspy3.cspackets.datatypes.Block",
+        "class": "Block.AsShort",
+        "type": "Block"
+    },
+    "blockAsVarInt": {
+        "import": "com.coolspy3.cspackets.datatypes.Block",
+        "class": "Block.AsVarInt",
+        "type": "Block"
+    },
     "blockUpdateAction": {
         "import": "com.coolspy3.cspackets.datatypes.BlockUpdateAction",
         "class": "BlockUpdateAction",

@@ -163,7 +163,7 @@ public class PlayerListPacket extends Packet
                             properties[i] = PacketParser.readObject(Property.class, is);
 
                         Gamemode gamemode = PacketParser.readObject(Gamemode.class, is);
-                        int ping = PacketParser.readWrappedObject(Packet.VarInt.class, is);
+                        int ping = PacketParser.readWrappedObject(VarInt.class, is);
 
                         players[i] = new PlayerInfo(uuid, name, properties, gamemode, ping,
                                 PacketParser.readObject(Boolean.class, is)
@@ -180,7 +180,7 @@ public class PlayerListPacket extends Packet
 
                     case UPDATE_LATENCY:
                         players[i] = new PlayerInfo(uuid,
-                                PacketParser.readWrappedObject(Packet.VarInt.class, is));
+                                PacketParser.readWrappedObject(VarInt.class, is));
 
                         break;
 
@@ -229,7 +229,7 @@ public class PlayerListPacket extends Packet
                                     player.properties[j], os);
 
                         PacketParser.writeObject(Gamemode.class, player.gamemode, os);
-                        PacketParser.writeObject(Packet.VarInt.class, player.ping, os);
+                        PacketParser.writeObject(VarInt.class, player.ping, os);
 
                         break;
 
@@ -239,7 +239,7 @@ public class PlayerListPacket extends Packet
                         break;
 
                     case UPDATE_LATENCY:
-                        PacketParser.writeObject(Packet.VarInt.class, player.ping, os);
+                        PacketParser.writeObject(VarInt.class, player.ping, os);
 
                         break;
 

@@ -56,13 +56,13 @@ public class CombatEventPacket extends Packet
 
                 case END_COMBAT:
                     return new CombatEventPacket(event,
-                            PacketParser.readWrappedObject(Packet.VarInt.class, is), 0,
-                            PacketParser.readWrappedObject(Packet.VarInt.class, is), null);
+                            PacketParser.readWrappedObject(VarInt.class, is), 0,
+                            PacketParser.readWrappedObject(VarInt.class, is), null);
 
                 case ENTITY_DEAD:
                     return new CombatEventPacket(event, 0,
-                            PacketParser.readWrappedObject(Packet.VarInt.class, is),
-                            PacketParser.readWrappedObject(Packet.VarInt.class, is),
+                            PacketParser.readWrappedObject(VarInt.class, is),
+                            PacketParser.readWrappedObject(VarInt.class, is),
                             PacketParser.readObject(String.class, is));
 
                 default:
@@ -81,14 +81,14 @@ public class CombatEventPacket extends Packet
                     break;
 
                 case END_COMBAT:
-                    PacketParser.writeObject(Packet.VarInt.class, packet.duration, os);
-                    PacketParser.writeObject(Packet.VarInt.class, packet.entityId, os);
+                    PacketParser.writeObject(VarInt.class, packet.duration, os);
+                    PacketParser.writeObject(VarInt.class, packet.entityId, os);
 
                     break;
 
                 case ENTITY_DEAD:
-                    PacketParser.writeObject(Packet.VarInt.class, packet.playerId, os);
-                    PacketParser.writeObject(Packet.VarInt.class, packet.entityId, os);
+                    PacketParser.writeObject(VarInt.class, packet.playerId, os);
+                    PacketParser.writeObject(VarInt.class, packet.entityId, os);
                     PacketParser.writeObject(String.class, packet.message, os);
 
                     break;

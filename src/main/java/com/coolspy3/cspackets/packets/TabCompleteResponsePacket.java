@@ -55,7 +55,7 @@ public class TabCompleteResponsePacket extends Packet
             Utils.writeVarInt(packet.matches.length, os);
 
             for (int i = 0; i < packet.matches.length; i++)
-                PacketParser.writeObject(Packet.VarInt.class, packet.matches[i], os);
+                PacketParser.writeObject(VarInt.class, packet.matches[i], os);
         }
 
     }

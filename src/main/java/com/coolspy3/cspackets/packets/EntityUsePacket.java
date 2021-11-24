@@ -57,7 +57,7 @@ public class EntityUsePacket extends Packet
         @Override
         public EntityUsePacket read(InputStream is) throws IOException
         {
-            int target = PacketParser.readWrappedObject(Packet.VarInt.class, is);
+            int target = PacketParser.readWrappedObject(VarInt.class, is);
             EntityInteractionType type = PacketParser.readObject(EntityInteractionType.class, is);
 
             if (type == EntityInteractionType.INTERACT_AT)
@@ -71,7 +71,7 @@ public class EntityUsePacket extends Packet
         @Override
         public void write(EntityUsePacket packet, OutputStream os) throws IOException
         {
-            PacketParser.writeObject(Packet.VarInt.class, packet.target, os);
+            PacketParser.writeObject(VarInt.class, packet.target, os);
             PacketParser.writeObject(EntityInteractionType.class, packet.type, os);
 
             if (packet.type != EntityInteractionType.INTERACT_AT) return;
