@@ -1,5 +1,7 @@
 package com.coolspy3.cspackets.datatypes;
 
+import com.coolspy3.csmodloader.network.packet.WrapperType;
+
 public enum Dimension
 {
 
@@ -29,5 +31,11 @@ public enum Dimension
 
         return null;
     }
+
+    public static class AsByte extends WrapperType<Dimension>
+    {}
+
+    public static class AsInt extends WrapperType<Dimension>
+    {}
 
 }

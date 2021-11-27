@@ -15,12 +15,24 @@ repositories {
     }
 }
 
+configurations {
+    inJar
+}
+
+configurations.compile.extendsFrom(configurations.inJar)
+
 dependencies {
     compileOnly 'com.coolspy3:CSModLoader:unspecified'
     compileOnly 'com.google.code.gson:gson:2.8.8'
     compileOnly group: 'commons-io', name: 'commons-io', version: '2.6'
-    implementation 'com.github.Querz:NBT:6.1'
+    inJar 'com.github.Querz:NBT:6.1'
     testImplementation     'junit:junit:4.13'
+}
+
+jar {
+    from(configurations.inJar) {
+        into 'META-INF/libraries'
+    }
 }
 
 // Template generation code for gradle Credit: DeepBlueRobotics

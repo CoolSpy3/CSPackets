@@ -31,7 +31,7 @@ components:
                 gamemode:
                     const: gamemode
                 dimension:
-                    const: dimension
+                    const: dimensionAsByte
                 difficulty:
                     const: difficulty
                 maxPlayers:
@@ -111,7 +111,7 @@ components:
                 direction:
                     const: clientbound
                 dimension:
-                    const: dimension
+                    const: dimensionAsInt
                 difficulty:
                     const: difficulty
                 gamemode:
@@ -133,9 +133,9 @@ components:
                 z:
                     const: double
                 yaw:
-                    const: double
+                    const: float
                 pitch:
-                    const: double
+                    const: float
                 flags:
                     const: positionAndLookFlags
 
@@ -189,9 +189,9 @@ components:
                 z:
                     const: int
                 yaw:
-                    const: int
+                    const: byte
                 pitch:
-                    const: int
+                    const: byte
                 currentItem:
                     const: short
                 metadata:
@@ -285,11 +285,11 @@ components:
                 entityId:
                     const: varint
                 xVel:
-                    const: int
+                    const: short
                 yVel:
-                    const: int
+                    const: short
                 zVel:
-                    const: int
+                    const: short
 
         EntityPacket:
             type: object
@@ -473,7 +473,7 @@ components:
                 totalExperience:
                     const: varint
 
-        SetEntityProperties:
+        SetEntityPropertiesPacket:
             type: object
             properties:
                 id:
@@ -513,7 +513,7 @@ components:
                 destroyStage:
                     const: byte
 
-        SoundEffectPacket:
+        EffectPacket:
             type: object
             properties:
                 id:
@@ -527,7 +527,27 @@ components:
                 data:
                     const: int
                 disableRelativeVolume:
+                    const: boolean
+
+        SoundEffectPacket:
+            type: object
+            properties:
+                id:
+                    const: "0x29"
+                direction:
+                    const: clientbound
+                name:
+                    const: string
+                x:
                     const: int
+                y:
+                    const: int
+                z:
+                    const: int
+                vol:
+                    const: float
+                pitch:
+                    const: byte
 
         GameStateChangePacket:
             type: object
@@ -576,6 +596,8 @@ components:
                     const: "0x2F"
                 direction:
                     const: clientbound
+                windowId:
+                    const: byte
                 slot:
                     const: short
                 slotData:
@@ -614,6 +636,8 @@ components:
                     const: "0x33"
                 direction:
                     const: clientbound
+                position:
+                    const: position
                 line1:
                     const: string
                 line2:
@@ -911,7 +935,7 @@ components:
             type: object
             properties:
                 id:
-                    const: "0x32"
+                    const: "0x0F"
                 direction:
                     const: serverbound
                 windowId:

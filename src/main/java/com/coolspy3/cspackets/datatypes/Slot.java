@@ -5,25 +5,23 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import com.coolspy3.csmodloader.network.packet.ObjectParser;
-import com.coolspy3.csmodloader.network.packet.Packet;
 import com.coolspy3.csmodloader.network.packet.PacketParser;
-import com.coolspy3.csmodloader.util.Utils;
 
 import net.querz.nbt.io.NamedTag;
 
 public class Slot
 {
 
-    public final boolean present;
-    public final int itemId;
+    public final short itemId;
     public final byte itemCount;
+    public final short itemDamage;
     public final NamedTag nbt;
 
-    public Slot(boolean present, int itemId, byte itemCount, NamedTag nbt)
+    public Slot(short itemId, byte itemCount, short itemDamage, NamedTag nbt)
     {
-        this.present = present;
         this.itemId = itemId;
         this.itemCount = itemCount;
+        this.itemDamage = itemDamage;
         this.nbt = nbt;
     }
 
@@ -33,28 +31,25 @@ public class Slot
         @Override
         public Slot decode(InputStream is) throws IOException
         {
-            boolean present = PacketParser.readObject(Boolean.class, is);
+            short itemId = PacketParser.readObject(Short.class, is);
 
-            if (present)
-            {
-                return new Slot(true, Utils.readVarInt(is), PacketParser.readObject(Byte.class, is),
-                        PacketParser.readObject(NamedTag.class, is));
-            }
+            if (itemId == -1) return new Slot(itemId, (byte) 0, (short) 0, null);
 
-            return new Slot(false, 0, (byte) 0, null);
+            return new Slot(itemId, PacketParser.readObject(Byte.class, is),
+                    PacketParser.readObject(Short.class, is),
+                    PacketParser.readObject(NamedTag.class, is));
         }
 
         @Override
         public void encode(Slot obj, OutputStream os) throws IOException
         {
-            PacketParser.writeObject(Boolean.class, obj.present, os);
+            PacketParser.writeObject(Short.class, obj.itemId, os);
 
-            if (obj.present)
-            {
-                PacketParser.writeObject(Packet.VarInt.class, obj.itemId, os);
-                PacketParser.writeObject(Byte.class, obj.itemCount, os);
-                PacketParser.writeObject(NamedTag.class, obj.nbt, os);
-            }
+            if (obj.itemId == -1) return;
+
+            PacketParser.writeObject(Byte.class, obj.itemCount, os);
+            PacketParser.writeObject(Short.class, obj.itemDamage, os);
+            PacketParser.writeObject(NamedTag.class, obj.nbt, os);
         }
 
         @Override

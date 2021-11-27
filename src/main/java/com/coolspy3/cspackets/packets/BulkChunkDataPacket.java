@@ -58,7 +58,7 @@ public class BulkChunkDataPacket extends Packet
 
             for (int i = 0; i < numChunks; i++)
                 chunks[i] = Chunk.read(chunkMetadata[i][0], chunkMetadata[i][1],
-                        (short) chunkMetadata[i][2], hasSkylightData, false, is);
+                        (short) chunkMetadata[i][2], hasSkylightData, true, is);
 
             return new BulkChunkDataPacket(hasSkylightData, chunks);
         }

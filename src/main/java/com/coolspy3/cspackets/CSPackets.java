@@ -19,9 +19,11 @@ import com.coolspy3.cspackets.datatypes.EntityInteractionType;
 import com.coolspy3.cspackets.datatypes.EntityMetadata;
 import com.coolspy3.cspackets.datatypes.EntityModifier;
 import com.coolspy3.cspackets.datatypes.EntityProperties;
+import com.coolspy3.cspackets.datatypes.EntityProperty;
 import com.coolspy3.cspackets.datatypes.EntityStatus;
 import com.coolspy3.cspackets.datatypes.Face;
 import com.coolspy3.cspackets.datatypes.FriendlyFireSetting;
+import com.coolspy3.cspackets.datatypes.GameState;
 import com.coolspy3.cspackets.datatypes.Gamemode;
 import com.coolspy3.cspackets.datatypes.MCColor;
 import com.coolspy3.cspackets.datatypes.NameTagVisibility;
@@ -46,7 +48,6 @@ import com.coolspy3.cspackets.datatypes.VehicleSteerFlags;
 import com.coolspy3.cspackets.datatypes.WorldBorderAction;
 import com.coolspy3.cspackets.packets.BlockChangePacket;
 import com.coolspy3.cspackets.packets.BulkChunkDataPacket;
-import com.coolspy3.cspackets.packets.ChunkDataPacket;
 import com.coolspy3.cspackets.packets.CombatEventPacket;
 import com.coolspy3.cspackets.packets.EntityDestroyPacket;
 import com.coolspy3.cspackets.packets.EntityUsePacket;
@@ -69,8 +70,6 @@ import com.coolspy3.cspackets.packets.WindowItemsPacket;
 import com.coolspy3.cspackets.packets.WindowOpenPacket;
 import com.coolspy3.cspackets.packets.WorldBorderUpdatePacket;
 
-import net.querz.nbt.io.NBTDeserializer;
-import net.querz.nbt.io.NBTSerializer;
 import net.querz.nbt.io.NamedTag;
 
 @Mod(id = "cspackets", name = "CSPackets",
@@ -117,19 +116,34 @@ public class CSPackets implements Entrypoint
 		PacketParser.addParser(PacketParser.mappingParser(Byte.class, Difficulty::getId,
 				Difficulty::withId, Difficulty.class));
 
-		PacketParser.addParser(PacketParser.mappingParser(Byte.class, Dimension::getId,
-				Dimension::withId, Dimension.class));
+		PacketParser.addParser(PacketParser.wrappingMappingParser(Byte.class, Dimension::getId,
+				Dimension::withId, Dimension.class, Dimension.AsByte.class));
+
+		PacketParser
+				.addParser(
+						ObjectParser.wrapping(
+								ObjectParser.mapping(
+										PacketParser.mappingParser(Integer.class, val -> val & 0xFF,
+												val -> (byte) (val & 0xFF), Byte.class),
+										Dimension::getId, Dimension::withId, Dimension.class),
+								Dimension.AsInt.class));
 
 		PacketParser.addParser(PacketParser.mappingWrappingParser(Packet.VarInt.class,
 				EntityInteractionType::getId, EntityInteractionType::withId,
 				EntityInteractionType.class));
 
-		PacketParser.addParser(new EntityMetadata.Parser());
+		// See #1
+		PacketParser.addParser(ObjectParser.of((stream, metadata) -> {},
+				stream -> new EntityMetadata(), EntityMetadata.class));
+		// PacketParser.addParser(new EntityMetadata.Parser());
 
 		PacketParser
 				.addParser(PacketParser.mappingParser(Byte.class, EntityModifier.Operation::getId,
 						EntityModifier.Operation::withId, EntityModifier.Operation.class));
+
 		PacketParser.addParser(new EntityModifier.Parser());
+
+		PacketParser.addParser(new EntityProperty.Parser());
 
 		PacketParser.addParser(new EntityProperties.Parser());
 
@@ -144,6 +158,9 @@ public class CSPackets implements Entrypoint
 
 		PacketParser.addParser(PacketParser.mappingParser(Byte.class, Gamemode::getId,
 				Gamemode::withId, Gamemode.class));
+
+		PacketParser.addParser(PacketParser.mappingParser(Byte.class, GameState::getId,
+				GameState::withId, GameState.class));
 
 		PacketParser.addParser(PacketParser.mappingParser(String.class, Locale::toString,
 				locale -> new Locale(locale.split("_")[0], locale.split("_")[1]), Locale.class));
@@ -248,7 +265,9 @@ public class CSPackets implements Entrypoint
 		PacketParser.registerPacket(EntityDestroyPacket.class, new EntityDestroyPacket.Serializer(),
 				0x13);
 
-		PacketParser.registerPacket(ChunkDataPacket.class, new ChunkDataPacket.Serializer(), 0x21);
+		// See #2
+		// PacketParser.registerPacket(ChunkDataPacket.class, new ChunkDataPacket.Serializer(),
+		// 0x21);
 
 		PacketParser.registerPacket(MultiblockChangePacket.class,
 				new MultiblockChangePacket.Serializer(), 0x22);

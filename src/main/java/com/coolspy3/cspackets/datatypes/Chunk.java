@@ -58,18 +58,21 @@ public class Chunk
         byte[][][] lightLevels = new byte[16][256][16];
 
         byte[] rawLightLevels = ChunkUtils
-                .fromHalfByteArray(Utils.readNBytes(is, numSubchunks * BLOCKS_PER_SUBCHUNK));
+                .fromHalfByteArray(Utils.readNBytes(is, numSubchunks * BLOCKS_PER_SUBCHUNK / 2));
 
         ChunkUtils.loopBlocksInValidSubchunksWithCount(mask,
                 (x, y, z, pos) -> lightLevels[x][y][z] = rawLightLevels[pos]);
 
         byte[][][] skylightLevels = hasSkylightData ? new byte[16][256][16] : null;
 
-        byte[] rawSkylightLevels = ChunkUtils
-                .fromHalfByteArray(Utils.readNBytes(is, numSubchunks * BLOCKS_PER_SUBCHUNK));
+        if (hasSkylightData)
+        {
+            byte[] rawSkylightLevels = ChunkUtils.fromHalfByteArray(
+                    Utils.readNBytes(is, numSubchunks * BLOCKS_PER_SUBCHUNK / 2));
 
-        if (hasSkylightData) ChunkUtils.loopBlocksInValidSubchunksWithCount(mask,
-                (x, y, z, pos) -> skylightLevels[x][y][z] = rawSkylightLevels[pos]);
+            ChunkUtils.loopBlocksInValidSubchunksWithCount(mask,
+                    (x, y, z, pos) -> skylightLevels[x][y][z] = rawSkylightLevels[pos]);
+        }
 
         byte[][] biomeIds = new byte[16][16];
 
@@ -77,7 +80,7 @@ public class Chunk
             for (int x = 0; x < 16; x++)
                 biomeIds[x][z] = (byte) is.read();
 
-        return null;
+        return new Chunk(chunkX, chunkZ, blocks, lightLevels, skylightLevels, biomeIds);
     }
 
     public short write(boolean sendSkylightData, boolean sendBiomeData, OutputStream os)

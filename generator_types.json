@@ -94,9 +94,14 @@
         "class": "Difficulty",
         "type": "Difficulty"
     },
-    "dimension": {
+    "dimensionAsByte": {
         "import": "com.coolspy3.cspackets.datatypes.Dimension",
-        "class": "Dimension",
+        "class": "Dimension.AsByte",
+        "type": "Dimension"
+    },
+    "dimensionAsInt": {
+        "import": "com.coolspy3.cspackets.datatypes.Dimension",
+        "class": "Dimension.AsInt",
         "type": "Dimension"
     },
     "entityInteractionType": {
@@ -118,6 +123,11 @@
         "import": "com.coolspy3.cspackets.datatypes.EntityModifier",
         "class": "EntityModifier.Operation",
         "type": "EntityModifier.Operation"
+    },
+    "entityProperty": {
+        "import": "com.coolspy3.cspackets.datatypes.EntityProperty",
+        "class": "EntityProperty",
+        "type": "EntityProperty"
     },
     "entityProperties": {
         "import": "com.coolspy3.cspackets.datatypes.EntityProperties",
@@ -171,13 +181,13 @@
     },
     "clientboundPlayerAbilities": {
         "import": "com.coolspy3.cspackets.datatypes.PlayerAbilities",
-        "class": "PlayerAbilities",
-        "type": "PlayerAbilities.Clientbound"
+        "class": "PlayerAbilities.Clientbound",
+        "type": "PlayerAbilities"
     },
     "serverboundPlayerAbilities": {
         "import": "com.coolspy3.cspackets.datatypes.PlayerAbilities",
-        "class": "PlayerAbilities",
-        "type": "PlayerAbilities.Serverbound"
+        "class": "PlayerAbilities.Serverbound",
+        "type": "PlayerAbilities"
     },
     "playerAction": {
         "import": "com.coolspy3.cspackets.datatypes.PlayerAction",
