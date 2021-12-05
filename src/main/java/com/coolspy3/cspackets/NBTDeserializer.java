@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.zip.GZIPInputStream;
 
+import com.coolspy3.csmodloader.util.Utils;
+
 import net.querz.io.Deserializer;
 import net.querz.nbt.io.LittleEndianNBTInputStream;
 import net.querz.nbt.io.NBTInput;
@@ -59,7 +61,7 @@ public class NBTDeserializer implements Deserializer<NamedTag>
 
         stream.mark(1);
 
-        int nextId = stream.read();
+        byte nextId = Utils.readByte(stream);
 
         stream.reset();
 

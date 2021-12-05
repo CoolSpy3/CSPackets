@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import com.coolspy3.csmodloader.network.packet.ObjectParser;
 import com.coolspy3.csmodloader.network.packet.PacketParser;
+import com.coolspy3.csmodloader.util.Utils;
 
 public class EntityMetadata extends ArrayList<Object>
 {
@@ -22,7 +23,7 @@ public class EntityMetadata extends ArrayList<Object>
 
             for (;;)
             {
-                byte item = (byte) is.read();
+                byte item = Utils.readByte(is);
                 if (item == 0x7F) break;
                 byte idx = (byte) (item & 0x1F);
                 byte type = (byte) (item >> 5);

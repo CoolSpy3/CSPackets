@@ -63,11 +63,8 @@ public class MapUpdatePacket extends Packet
             byte[][] icons = new byte[count][3];
 
             for (int i = 0; i < count; i++)
-            {
-                icons[i][0] = (byte) is.read();
-                icons[i][1] = (byte) is.read();
-                icons[i][2] = (byte) is.read();
-            }
+                // Direction & Type, X, Z
+                icons[i] = Utils.readNBytes(is, 3);
 
             byte updatedColumns = PacketParser.readObject(Byte.class, is);
 
@@ -91,11 +88,7 @@ public class MapUpdatePacket extends Packet
             PacketParser.writeObject(VarInt.class, packet.icons.length, os);
 
             for (int i = 0; i < packet.icons.length; i++)
-            {
-                os.write(packet.icons[i][0]);
-                os.write(packet.icons[i][1]);
-                os.write(packet.icons[i][2]);
-            }
+                os.write(packet.icons[i]);
 
             PacketParser.writeObject(Byte.class, packet.updatedColumns, os);
 

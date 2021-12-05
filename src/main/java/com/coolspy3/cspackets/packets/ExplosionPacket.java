@@ -9,6 +9,7 @@ import com.coolspy3.csmodloader.network.packet.Packet;
 import com.coolspy3.csmodloader.network.packet.PacketParser;
 import com.coolspy3.csmodloader.network.packet.PacketSerializer;
 import com.coolspy3.csmodloader.network.packet.PacketSpec;
+import com.coolspy3.csmodloader.util.Utils;
 
 @PacketSpec(types = {}, direction = PacketDirection.CLIENTBOUND)
 public class ExplosionPacket extends Packet
@@ -57,8 +58,8 @@ public class ExplosionPacket extends Packet
             byte[][] affectedBlocks = new byte[count][3];
 
             for (int i = 0; i < count; i++)
-                affectedBlocks[i] =
-                        new byte[] {(byte) is.read(), (byte) is.read(), (byte) is.read()};
+                // X, Y, Z
+                affectedBlocks[i] = Utils.readNBytes(is, 3);
 
             float px = PacketParser.readObject(Float.class, is);
             float py = PacketParser.readObject(Float.class, is);
@@ -77,11 +78,7 @@ public class ExplosionPacket extends Packet
             PacketParser.writeObject(Integer.class, packet.affectedBlocks.length, os);
 
             for (int i = 0; i < packet.affectedBlocks.length; i++)
-            {
-                os.write(packet.affectedBlocks[i][0]);
-                os.write(packet.affectedBlocks[i][1]);
-                os.write(packet.affectedBlocks[i][2]);
-            }
+                os.write(packet.affectedBlocks[i]);
 
             PacketParser.writeObject(Float.class, packet.playerVelX, os);
             PacketParser.writeObject(Float.class, packet.playerVelY, os);

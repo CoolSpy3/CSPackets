@@ -53,8 +53,8 @@ public class MultiblockChangePacket extends Packet
             @Override
             public Record decode(InputStream is) throws IOException
             {
-                int pos = is.read();
-                byte y = (byte) is.read();
+                byte pos = Utils.readByte(is);
+                byte y = Utils.readByte(is);
                 Block block = PacketParser.readWrappedObject(Block.AsVarInt.class, is);
 
                 return new Record((byte) (pos >> 4), (byte) (pos & 15), y, block);
@@ -63,8 +63,8 @@ public class MultiblockChangePacket extends Packet
             @Override
             public void encode(Record obj, OutputStream os) throws IOException
             {
-                os.write((obj.relativeX << 4) | obj.relativeZ);
-                os.write(obj.y);
+                Utils.writeByte((obj.relativeX << 4) | obj.relativeZ, os);
+                Utils.writeByte(obj.y, os);
                 PacketParser.writeObject(Block.AsVarInt.class, obj, os);
             }
 

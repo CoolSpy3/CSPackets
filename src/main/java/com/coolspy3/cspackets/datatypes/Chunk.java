@@ -78,7 +78,7 @@ public class Chunk
 
         if (hasBiomeData) for (int z = 0; z < 16; z++)
             for (int x = 0; x < 16; x++)
-                biomeIds[x][z] = (byte) is.read();
+                biomeIds[x][z] = (byte) Utils.readByte(is);
 
         return new Chunk(chunkX, chunkZ, blocks, lightLevels, skylightLevels, biomeIds);
     }
