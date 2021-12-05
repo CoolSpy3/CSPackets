@@ -9,7 +9,7 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 repositories {
-    jcenter()
+    mavenCentral()
     maven {
         url 'https://jitpack.io/'
     }
@@ -19,7 +19,7 @@ configurations {
     inJar
 }
 
-configurations.compile.extendsFrom(configurations.inJar)
+configurations.compileClasspath.extendsFrom(configurations.inJar)
 
 dependencies {
     compileOnly 'com.coolspy3:CSModLoader:unspecified'
