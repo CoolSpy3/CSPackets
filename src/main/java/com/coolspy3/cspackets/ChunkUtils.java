@@ -12,17 +12,16 @@ public class ChunkUtils
     public static final Chunk addSkylightData(Chunk chunk)
     {
         if (chunk.skylightLevels == null) return new Chunk(chunk.chunkX, chunk.chunkZ,
-                ChunkUtils.copy3dBlocks(chunk.blocks), ChunkUtils.copy3dBytes(chunk.lightLevels),
-                new byte[16][256][16], ChunkUtils.copy2dBytes(chunk.biomeIds));
+                copy3dBlocks(chunk.blocks), copy3dBytes(chunk.lightLevels), new byte[16][256][16],
+                copy2dBytes(chunk.biomeIds));
 
         return chunk;
     }
 
     public static final Chunk addSkylightData(Chunk chunk, byte[][][] skylightData)
     {
-        return new Chunk(chunk.chunkX, chunk.chunkZ, ChunkUtils.copy3dBlocks(chunk.blocks),
-                ChunkUtils.copy3dBytes(chunk.lightLevels), skylightData,
-                ChunkUtils.copy2dBytes(chunk.biomeIds));
+        return new Chunk(chunk.chunkX, chunk.chunkZ, copy3dBlocks(chunk.blocks),
+                copy3dBytes(chunk.lightLevels), skylightData, copy2dBytes(chunk.biomeIds));
     }
 
     public static final short calculateMask(Block[][][] blocks)
@@ -144,9 +143,8 @@ public class ChunkUtils
 
     public static final Chunk removeSkylightData(Chunk chunk)
     {
-        return new Chunk(chunk.chunkX, chunk.chunkZ, ChunkUtils.copy3dBlocks(chunk.blocks),
-                ChunkUtils.copy3dBytes(chunk.lightLevels), null,
-                ChunkUtils.copy2dBytes(chunk.biomeIds));
+        return new Chunk(chunk.chunkX, chunk.chunkZ, copy3dBlocks(chunk.blocks),
+                copy3dBytes(chunk.lightLevels), null, copy2dBytes(chunk.biomeIds));
     }
 
     public static boolean subchunkIsAir(int subchunk, Block[][][] blocks)
