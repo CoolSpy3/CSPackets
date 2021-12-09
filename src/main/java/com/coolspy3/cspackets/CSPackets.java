@@ -58,6 +58,7 @@ import com.coolspy3.cspackets.packets.MultiblockChangePacket;
 import com.coolspy3.cspackets.packets.ObjectSpawnPacket;
 import com.coolspy3.cspackets.packets.ParticlePacket;
 import com.coolspy3.cspackets.packets.PlayerListPacket;
+import com.coolspy3.cspackets.packets.PluginMessagePacket;
 import com.coolspy3.cspackets.packets.ScoreboardObjectivePacket;
 import com.coolspy3.cspackets.packets.ScoreboardUpdatePacket;
 import com.coolspy3.cspackets.packets.StatisticsPacket;
@@ -308,6 +309,9 @@ public class CSPackets implements Entrypoint
 		PacketParser.registerPacket(TeamUpdatePacket.class, new TeamUpdatePacket.Serializer(),
 				0x3E);
 
+		PacketParser.registerPacket(PluginMessagePacket.Clientbound.class,
+				PluginMessagePacket.Clientbound.SERIALIZER, 0x3F);
+
 		PacketParser.registerPacket(CombatEventPacket.class, new CombatEventPacket.Serializer(),
 				0x42);
 
@@ -325,6 +329,9 @@ public class CSPackets implements Entrypoint
 
 		PacketParser.registerPacket(TabCompletePacket.class, new TabCompletePacket.Serializer(),
 				0x14);
+
+		PacketParser.registerPacket(PluginMessagePacket.Serverbound.class,
+				PluginMessagePacket.Serverbound.SERIALIZER, 0x17);
 	}
 
 }
