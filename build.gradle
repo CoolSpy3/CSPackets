@@ -31,7 +31,6 @@ configurations.compileClasspath.extendsFrom(configurations.libraries)
 
 dependencies {
     compileOnly 'com.coolspy3:csmodloader:1.0.1'
-    implementation group: 'commons-io', name: 'commons-io', version: '2.6'
     implementation 'com.github.Querz:NBT:6.1'
     testImplementation     'junit:junit:4.13'
 }
@@ -39,6 +38,10 @@ dependencies {
 jar {
     from(configurations.libraries) {
         into 'META-INF/libraries'
+    }
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
 
@@ -102,7 +105,7 @@ publishing {
         gpr(MavenPublication) {
             groupId = 'com.coolspy3'
             artifactId = 'cspackets'
-            version = '1.1.0'
+            version = '1.1.1'
 
             from components.java
         }
