@@ -1,5 +1,7 @@
 package com.coolspy3.cspackets.datatypes;
 
+import java.util.regex.Pattern;
+
 public enum MCColor
 {
 
@@ -9,6 +11,9 @@ public enum MCColor
                             0xC), LIGHT_PURPLE('d', 0xD), YELLOW('e', 0xE), WHITE('f',
                                     0xF), OBFUSCATED('k'), BOLD('l'), STRIKETHROUGH(
                                             'm'), UNDERLINE('n'), ITALIC('o'), RESET('r');
+
+    public static final Pattern STRIP_FORMATTING_PATTERN =
+            Pattern.compile("(?i)\u00a7[0-9A-FK-OR]");
 
     private final String toString;
     public final byte id;
@@ -46,6 +51,11 @@ public enum MCColor
     public String toString()
     {
         return toString;
+    }
+
+    public static String stripFormatting(String text)
+    {
+        return text == null ? null : STRIP_FORMATTING_PATTERN.matcher(text).replaceAll("");
     }
 
 }
