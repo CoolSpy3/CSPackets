@@ -30,7 +30,7 @@ configurations {
 configurations.compileClasspath.extendsFrom(configurations.libraries)
 
 dependencies {
-    compileOnly 'com.coolspy3:csmodloader:1.0.0'
+    compileOnly 'com.coolspy3:csmodloader:1.0.1'
     implementation 'com.github.Querz:NBT:6.1'
     testImplementation     'junit:junit:4.13'
 }
