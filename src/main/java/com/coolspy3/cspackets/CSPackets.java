@@ -74,8 +74,8 @@ import com.coolspy3.cspackets.packets.WorldBorderUpdatePacket;
 import net.querz.nbt.io.NamedTag;
 
 @Mod(id = "cspackets", name = "CSPackets",
-		description = "Adds implementations for default packet types", version = "1.2.0",
-		dependencies = "csmodloader:[1.0.0,2)")
+		description = "Adds implementations for default packet types", version = "1.2.1",
+		dependencies = "csmodloader:[1.3.1,2)")
 public class CSPackets implements Entrypoint
 {
 
